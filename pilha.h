@@ -1,66 +1,45 @@
-typedef struct No_pilha {
-    void* dado ;
-    size_t size;
-    struct No_pilha *prox ;
-    struct No_pilha *ant ;
-} No_pilha ;
+/*
+
+Pilhas são estruturas de dados utilizadas para simular algumas situações reais.
+
+Todas as funções foram testadas pelo menor uma vez.
+
+*/
+
+#include "NoSent.h"
 
 typedef struct {
-    No_pilha *Topo ;
+    NoSent *Topo ;
     int tam ;
     size_t size ;
 } Pilha ;
 
 /* CONSTRUTOR E DESTRUTOR */
 Pilha* new_Pilha (size_t size);     // OK
-void delete_Pilha (Pilha *P);       // OK
+void delete_Pilha (Pilha** P);       // OK
 
 /* FUNCOES DE INSERCAO */
-No_pilha* push_Pilha (Pilha *P, void* elem);  // OK
+NoSent* push_Pilha (Pilha *P, void* elem);  // OK
+static NoSent* push_ant_Pilha (Pilha* P, void* elem, NoSent* pos); // OK
 
 /* FUNCOES DE REMOCAO */
-No_pilha* pop_Pilha (Pilha *P);           // OK
+NoSent* pop_Pilha (Pilha *P);           // OK
+static NoSent* pop_in_Pilha (Pilha* P, NoSent* pos); // OK 
 
 void clear_Pilha (Pilha* P);        // OK
 
 /* FUNCOES AUXILIARES */
-void reverse_Pilha (Pilha* P);  // OK
-void _reverse_Pilha(Pilha* P);  // OK
+void reverse_Pilha (Pilha** P);  // OK
 void copy_Pilha (Pilha *dest, const Pilha* fonte);  // OK
 void swap_Pilha (Pilha* P1, Pilha *P2);             // OK
-void print_Pilha (Pilha *P, void(*print)(void*)) ;  // OK
-
-/* FUNCOES No_pilha */
-No_pilha* new_No_pilha(void* elem, size_t s) ; // OK
-void copy_No_pilha(No_pilha *dest, const No_pilha* fonte); // OK
-void delete_No_pilha(No_pilha* N); // OK
-
-No_pilha* new_No_pilha(void* elem, size_t s){
-    No_pilha* No_pilhavo = (No_pilha*)calloc(1,sizeof(No_pilha));
-
-    No_pilhavo->prox = NULL ;
-
-    No_pilhavo->dado = calloc(1, s);
-    memcpy(No_pilhavo->dado, elem, s);
-
-    No_pilhavo->size = s;
-
-    return No_pilhavo;
-}
-void copy_No_pilha(No_pilha *dest, const No_pilha* fonte){
-    dest = new_No_pilha(fonte->dado, fonte->size);
-}
-void delete_No_pilha(No_pilha* N){
-    free(N->dado);
-    free(N);
-}
+void print_Pilha (Pilha *P, void(*print)(const void*)) ;  // OK
 
 /* IMPLEMENTACOES PILHA */
 Pilha* new_Pilha (size_t size){
     Pilha* P = (Pilha*) malloc (sizeof(Pilha));
 
     void* aux = calloc(1,size);
-    P->Topo = new_No_pilha(aux, size);
+    P->Topo = new_NoSent(aux, size);
     free(aux);
 
     P->Topo->prox = P->Topo->ant = P->Topo;
@@ -71,32 +50,47 @@ Pilha* new_Pilha (size_t size){
     return P;
 
 }
-void delete_Pilha (Pilha *P){
-    clear_Pilha(P);
-    delete_No_pilha(P->Topo);
-    free(P);
+void delete_Pilha (Pilha** P){
+    clear_Pilha(*P);
+    delete_NoSent(&((*P)->Topo));
+    free(*P);
+    *P = NULL;
 }
 
-No_pilha* push_Pilha (Pilha *P, void* elem){
-    if(P == NULL) return NULL;
-    if(elem == NULL) return NULL;
+NoSent* push_Pilha (Pilha *P, void* elem){
+    return push_ant_Pilha(P, elem, P->Topo);
+}
 
-    No_pilha* No_pilhavo = new_No_pilha(elem, P->size);
-    No_pilhavo->prox = P->Topo->prox;
-    No_pilhavo->ant = P->Topo;
-    P->Topo->prox->ant = No_pilhavo;
-    P->Topo->prox = No_pilhavo;
+static NoSent* push_ant_Pilha (Pilha* P, void* elem, NoSent* pos){
+    // assert(L != NULL);
+    if(pos == NULL) return NULL;
+    if(elem == NULL) return NULL;
+    if(P == NULL) return NULL;
+
+    NoSent* novo = new_NoSent(elem, P->size);
+
+    novo->prox = pos->prox;
+    novo->ant = pos;
+    pos->prox->ant = novo;
+    pos->prox = novo;
 
     P->tam++;
 
-    return No_pilhavo;
+    return novo;
 }
 
-No_pilha* pop_Pilha (Pilha *P){
-    if(P == NULL) return NULL;
-    if(P->tam == 0) return NULL;
+NoSent* pop_Pilha (Pilha *P){
+    return pop_in_Pilha(P, P->Topo->prox);
+}
 
-    No_pilha* pos = P->Topo->prox;
+static NoSent* pop_in_Pilha (Pilha* P, NoSent* pos){
+    // assert(L != NULL);
+    // assert(pos != NULL);
+    // assert(pos != L->Sentinela);
+    if(P == NULL) return NULL;
+    if(pos == NULL) return NULL;
+    if(pos == P->Topo) return NULL;
+
     pos->ant->prox = pos->prox ;
     pos->prox->ant = pos->ant ;
 
@@ -107,45 +101,24 @@ No_pilha* pop_Pilha (Pilha *P){
     return pos;
 }
 
-
 void clear_Pilha (Pilha* P){
-    No_pilha* aux = pop_Pilha(P);
+    NoSent* aux = pop_Pilha(P);
     while(aux != NULL){
-        delete_No_pilha(aux);
+        delete_NoSent(&aux);
         aux = pop_Pilha(P);
     }
 }
 
-void _reverse_Pilha(Pilha* P){
-    No_pilha* aux = pop_Pilha(P);
-    if(aux != NULL){
-        _reverse_Pilha(P);
-
-        // Insere No_pilha fim
-        No_pilha* No_pilhavo = new_No_pilha(aux->dado, aux->size);
-        No_pilhavo->prox = P->Topo;
-        No_pilhavo->ant = P->Topo->ant;
-        P->Topo->ant->prox = No_pilhavo;
-        P->Topo->ant = No_pilhavo;
-
-        delete_No_pilha(aux);
-        
-        P->tam++;
-    }  
-}
-
-void reverse_Pilha (Pilha* P){
-    Pilha* P2 = new_Pilha(P->size);    // Simula uma recursão
-    copy_Pilha(P2, P);
-    clear_Pilha(P);
-    
-    No_pilha* aux ;
-    aux = pop_Pilha(P2);
+void reverse_Pilha (Pilha** P){
+    NoSent* aux = pop_Pilha(*P);
+    Pilha* T    = new_Pilha((*P)->size);
     while(aux != NULL){
-        push_Pilha(P, aux->dado);
-        delete_No_pilha(aux);
-        aux = pop_Pilha(P2);
+        push_ant_Pilha(T, aux->dado, T->Topo);
+        delete_NoSent(&aux);
+        aux = pop_Pilha(*P);
     }
+    delete_Pilha(P);
+    *P = T;
 }
 
 void copy_Pilha (Pilha *dest, const Pilha* fonte){
@@ -154,7 +127,7 @@ void copy_Pilha (Pilha *dest, const Pilha* fonte){
     if(dest->tam != 0) {
         clear_Pilha(dest);
     }
-    No_pilha* aux = fonte->Topo->ant;
+    NoSent* aux = fonte->Topo->ant;
     while(aux != fonte->Topo){
         push_Pilha(dest, aux->dado);
         aux = aux->ant;
@@ -170,8 +143,8 @@ void swap_Pilha (Pilha* P1, Pilha *P2){
     copy_Pilha(P2, aux);
 }
 
-void print_Pilha (Pilha *P, void(*print)(void*)){
-    No_pilha* aux = P->Topo->prox;
+void print_Pilha (Pilha *P, void(*print)(const void*)){
+    NoSent* aux = P->Topo->prox;
     while(aux != P->Topo){
         print(aux->dado);
         aux = aux->prox;

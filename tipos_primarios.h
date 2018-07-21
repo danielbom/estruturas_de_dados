@@ -1,38 +1,103 @@
+#ifndef tipos_primarios
+#define tipos_primarios
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
+
+#ifndef ULLI
+#define ULLI unsigned long long int
+#endif
+
+#ifndef IS_DIVISIBLE
+#define IS_DIVISIBLE(x, y) x % y == 0
+#endif
+
+/* Faz a troca de qualquer tipo de valor */
+void swap(void* a, void* b, size_t s){
+    void* t = malloc(s);
+    memcpy(t, a, s);
+    memcpy(a, b, s);
+    memcpy(b, t, s);
+    free(t);
+}
+
+/* CASTING PARA TIPOS PRIMARIOS */
+int toInt(const void* v){
+    return *(int*)v;
+}
+float toFloat(const void* v){
+    return *(float*)v;
+}
+double toDouble(const void* v){
+    return *(double*)v;
+}
+char toChar(const void* v){
+    return *(char*)v;
+}
+char* toString(const void* v){
+    return *(char**)v;
+}
+ULLI toULLI(const void* v){
+    return *(ULLI*)v;
+}
+
+/* ATRIBUIÇÕES PARA TIPOS PRIMARIOS */
+void setInt(void* a, int b){
+    memcpy(a, &b, sizeof(int));
+}
+void setFloat(float* a, float b){
+    memcpy(a, &b, sizeof(float));
+}
+void setDouble(double* a, double b){
+    memcpy(a, &b, sizeof(double));
+}
+void setChar(char* a, char b){
+    memcpy(a, &b, sizeof(char*));
+}
+void setString(char* a, char* b){
+    strcpy(a, b);
+}
 
 /* IMPRESSAO DE TIPOS PRIMARIOS */
-void printInt(void* v){
-    printf("%d ", *(int*)v);
+void printInt(const void* v){
+    printf("%d ", toInt(v) );
 }
-void printFloat(void* v){
-    printf("%f ", *(float*)v);
+void printFloat(const void* v){
+    printf("%f ", toFloat(v) );
 }
-void printDouble(void* v){
-    printf("%lf ", *(double*)v);
+void printDouble(const void* v){
+    printf("%lf ", toDouble(v) );
 }
-void printChar(void* v){
-    printf("%c ", *(char*)v);
+void printChar(const void* v){
+    printf("%c ", toChar(v) );
 }
-void printString(void* v){
-    printf("%s ", *(char**)v);
+void printString(const void* v){
+    printf("%s ", toString(v) );
+}
+void printULLI(const void* v){
+    printf("%ull ", toULLI(v) );
 }
 
 /* COMPARACAO DE TIPOS PRIMARIOS */
-int compararInt(void* a, void* b){
-    return *(int*)a > *(int*)b ? 1 : (*(int*)a < *(int*)b ? -1 : 0);
+int cmpInt(const void* a, const void* b){
+    return toInt(a) - toInt(b);
 }
-int compararFloat(void* a, void* b){
-    return *(float*)a > *(float*)b ? 1 : (*(float*)a < *(float*)b ? -1 : 0);
+int cmpFloat(const void* a, const void* b){
+    return toFloat(a) - toFloat(b);
 }
-int compararDouble(void* a, void* b){
-    return *(double*)a > *(double*)b ? 1 : (*(double*)a < *(double*)b ? -1 : 0);
+int cmpDouble(const void* a, const void* b){
+    return toDouble(a) - toDouble(b);
 }
-int compararChar(void* a, void* b){
-    return *(char*)a > *(char*)b ? 1 : (*(char*)a < *(char*)b ? -1 : 0);
+int cmpChar(const void* a, const void* b){
+    return toChar(a) - toChar(b);
 }
-int compararString(void* a, void* b){
-    return strcmp(*(char**)a, *(char**)b);
+int cmpString(const void* a, const void* b){
+    return strcmp(toString(a), toString(b));
 }
+int cmpULLI(const void* a, const void* b){
+    return toULLI(a) - toULLI(b);
+}
+
+#endif
