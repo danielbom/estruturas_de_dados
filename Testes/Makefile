@@ -9,6 +9,7 @@ testes:
 	${CC} BST_teste.c -o bst.exe
 	${CC} Pilha_teste.c -o pilha.exe
 	${CC} primo_teste.c -o primos.exe
+	${CC} macros_teste.c -o macros.exe
 
 clean: 
 	rm *.exe
