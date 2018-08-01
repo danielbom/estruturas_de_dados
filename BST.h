@@ -1,9 +1,8 @@
+// BST -> BinarySearchTree
+
 #include "NoTree.h"
 #include "tipos_primarios.h"
 
-/*
- *  BST -> BinarySearchTree
-*/
 typedef struct BST
 {
     NoTree *raiz;
@@ -12,35 +11,35 @@ typedef struct BST
 } BST;
 
 /* CONSTRUTOR E DESTRUTOR */
-BST *new_BST(size_t size); // OK
-void delete_BST(BST **B);  // OK
+BST *new_BST(size_t size); // OK 30/07/2018
+void delete_BST(BST **B);  // OK 30/07/2018
 
 /* FUNCOES DE BUSCA */
-NoTree *search_BST(BST *B, void *elem, int (*cmp)(const void *, const void *)); // OK
+NoTree *search_BST(BST *B, void *elem, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
 /* FUNCOES DE INSERCAO */
-void add_BST(BST *B, void *elem, int (*cmp)(const void *, const void *));                        // OK
-static NoTree *_add_BST(BST *B, NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // OK
+void add_BST(BST *B, void *elem, int (*cmp)(const void *, const void *));                        // OK 30/07/2018
+static NoTree *_add_BST(BST *B, NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
 /* FUNCOES DE REMOCAO */
-void remove_BST(BST *B, void *elem, int (*cmp)(const void *, const void *));                        // OK
-static NoTree *_remove_BST(BST *B, NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // OK
+void remove_BST(BST *B, void *elem, int (*cmp)(const void *, const void *));                        // OK 30/07/2018
+static NoTree *_remove_BST(BST *B, NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
-void clear_BST(BST *L); // OK
+void clear_BST(BST *L); // OK 30/07/2018
 
 /* FUNCOES AUXILIARES */
-bool empyt_BST(BST *B);                                                             // OK
-void in_order_BST(BST *B, void (*print)(const void *));                             // OK
-void pre_order_BST(BST *B, void (*print)(const void *));                            // OK
-void pos_order_BST(BST *B, void (*print)(const void *));                            // OK
-void copy_BST(BST *dest, const BST *fonte, int (*cmp)(const void *, const void *)); // OK
+bool empyt_BST(BST *B);                                                             // OK 30/07/2018
+void in_order_BST(BST *B, void (*print)(const void *));                             // OK 30/07/2018
+void pre_order_BST(BST *B, void (*print)(const void *));                            // OK 30/07/2018
+void pos_order_BST(BST *B, void (*print)(const void *));                            // OK 30/07/2018
+void copy_BST(BST *dest, const BST *fonte, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
-static void print_decorator_BST(const void *dado, void (*print)(const void *)); // OK
+static void print_decorator_BST(const void *dado, void (*print)(const void *)); // OK 30/07/2018
 
-void *min_BST(BST *B);               // OK
-void *max_BST(BST *B);               // OK
-static NoTree *_min_BST(NoTree *no); // OK
-static NoTree *_max_BST(NoTree *no); // OK
+void *min_BST(BST *B);               // OK 30/07/2018
+void *max_BST(BST *B);               // OK 30/07/2018
+static NoTree *_min_BST(NoTree *no); // OK 30/07/2018
+static NoTree *_max_BST(NoTree *no); // OK 30/07/2018
 
 /* IMPLEMENTACOES BST */
 
@@ -85,7 +84,7 @@ static NoTree *_add_BST(BST *B, NoTree *no, void *elem, int (*cmp)(const void *,
 {
     if (no == NULL)
     {
-        no = new_NoTree(elem, B->size, 0);
+        no = new_NoTree(elem, B->size);
         B->qtde++;
     }
     else if (cmp(elem, no->dado) < 0)

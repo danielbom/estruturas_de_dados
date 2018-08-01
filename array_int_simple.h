@@ -4,20 +4,20 @@
 #include "tipos_primarios.h"
 #include <time.h>
 
-void print_if_array(int *v, int n, bool (*condicao)(int));
-void print_array(int *v, int n);
+//void print_if_array(int *v, int n, bool (*condicao)(int));
+//void print_array(int *v, int n);
 
 int *random_array(int begin, int end, int array_length);
 int *zeros_array(int array_length);
 
 int *copy_array(int *v, int n);
 
-int unique_array(int *v, int n);
+//int unique_array(int *v, int n);
 
-bool equals_array(int *v1, int *v2, int n);
-int find_array(int *v, int n, int e);
-int max_array(int *v, int n);
-int min_array(int *v, int n);
+//bool equals_array(int *v1, int *v2, int n);
+//int find_array(int *v, int n, int e);
+//int max_array(int *v, int n);
+//int min_array(int *v, int n);
 
 int mult_array(int *v, int n);
 int sum_array(int *v, int n);
@@ -37,7 +37,7 @@ int *random_array(int begin, int end, int array_length)
 
     return v;
 }
-
+/*
 void print_if_array(int *v, int n, bool (*condicao)(int))
 {
     printf("( ");
@@ -66,8 +66,6 @@ bool equals_array_(void *a, void *b, int n, int (*cmp)(const void *, const void 
     {
         if (NOT_EQUAL_TO(cmp(a + i, b + i)))
         {
-            // DEBUG
-            // printf("\n\n%d %d\n\n", v1[i], v2[i]);
             return false;
         }
     }
@@ -81,12 +79,12 @@ int find_array(int *v, int n, int e)
             return i;
     return -1;
 }
-
+*/
 int *zeros_array(int array_length)
 {
     return (int *)calloc(array_length, sizeof(int));
 }
-
+/*
 void printz_array(int *v, int n)
 {
     printf("( ");
@@ -108,7 +106,7 @@ int unique_array(int *v, int n)
     int _unique_array(int *v, int n)
     {
         int i, j;
-        for (i = 0; i < n; i++)
+        for (i = 0; i < n - 1; i++)
         {
             if (v[i] == v[i + 1])
             {
@@ -124,7 +122,7 @@ int unique_array(int *v, int n)
     qsort(v, n, sizeof(int), cmpInt);
 
     int i, j;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < n - 1; i++)
     {
         if (v[i] == v[i + 1])
         {
@@ -136,14 +134,14 @@ int unique_array(int *v, int n)
     }
     return _unique_array(v, n);
 }
-
+*/
 int *copy_array(int *v, int n)
 {
     int *r = (int *)calloc(n, sizeof(int));
     memcpy(r, v, n * sizeof(int));
     return r;
 }
-
+/*
 int max_array(int *v, int n)
 {
     int max = 0;
@@ -161,7 +159,7 @@ int min_array(int *v, int n)
             min = i;
     return min;
 }
-
+*/
 int mult_array(int *v, int n)
 {
     int m = 1;

@@ -1,10 +1,7 @@
-/*
- * AVL -> Adelson-Velskii & Landis - 1962
-*/
+// AVL -> Adelson-Velskii & Landis - 1962
+
 #include "tipos_primarios.h"
 #include "NoTree.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 typedef struct AVLT
 {
@@ -12,45 +9,46 @@ typedef struct AVLT
     int qtde;
     size_t size;
 } AVLT;
+
 /* CONSTRUTOR E DESTRUTOR */
 AVLT *new_AVLT(size_t size);
 void delete_AVLT(AVLT **A);
 
 /* FUNCOES DE BUSCA */
-NoTree *search_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *)); // OK
+NoTree *search_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
 /* FUNCOES DE INSERCAO */
-void add_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *));
-static NoTree *_add_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *));
+bool add_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *));                                   // OK 30/07/2018
+static NoTree *_add_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *add); // OK 30/07/2018
 
 /* FUNCOES DE REMOCAO */
-void remove_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *));
-static NoTree *_remove_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *));
+bool remove_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *));                                       // OK 30/07/2018
+static NoTree *_remove_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *removed); // OK 30/07/2018
 
-void clear_AVLT(AVLT *L); // OK
+void clear_AVLT(AVLT *L); // OK 30/07/2018
 
 /* FUNCOES AUXILIARES */
-bool empyt_AVLT(AVLT *A);                                  // OK
-void in_order_AVLT(AVLT *A, void (*print)(const void *));  // OK
-void pre_order_AVLT(AVLT *A, void (*print)(const void *)); // OK
-void pos_order_AVLT(AVLT *A, void (*print)(const void *)); // OK
+bool empyt_AVLT(AVLT *A);                                  // OK 30/07/2018
+void in_order_AVLT(AVLT *A, void (*print)(const void *));  // OK 30/07/2018
+void pre_order_AVLT(AVLT *A, void (*print)(const void *)); // OK 30/07/2018
+void pos_order_AVLT(AVLT *A, void (*print)(const void *)); // OK 30/07/2018
 
-static void print_decorator_AVLT(const void *dado, void (*print)(const void *)); // OK
+static void print_decorator_AVLT(const void *dado, void (*print)(const void *)); // OK 30/07/2018
 
-int heigth_AVLT(AVLT *A);            // OK
-static int _heigth_AVLT(NoTree *no); // OK
+int heigth_AVLT(AVLT *A);            // OK 30/07/2018
+static int _heigth_AVLT(NoTree *no); // OK 30/07/2018
 
-static NoTree *_check_unbalanced(NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // OK
+static NoTree *_check_unbalanced(NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
-static NoTree *rotate_RR_AVLT(NoTree *no); // OK
-static NoTree *rotate_LL_AVLT(NoTree *no); // OK
-static NoTree *rotate_RL_AVLT(NoTree *no); // OK
-static NoTree *rotate_LR_AVLT(NoTree *no); // OK
+static NoTree *rotate_RR_AVLT(NoTree *no); // OK 30/07/2018
+static NoTree *rotate_LL_AVLT(NoTree *no); // OK 30/07/2018
+static NoTree *rotate_RL_AVLT(NoTree *no); // OK 30/07/2018
+static NoTree *rotate_LR_AVLT(NoTree *no); // OK 30/07/2018
 
-void *min_AVLT(AVLT *B);              // OK
-void *max_AVLT(AVLT *B);              // OK
-static NoTree *_min_AVLT(NoTree *no); // OK
-static NoTree *_max_AVLT(NoTree *no); // OK
+void *min_AVLT(AVLT *A);              // OK 30/07/2018
+void *max_AVLT(AVLT *A);              // OK 30/07/2018
+static NoTree *_min_AVLT(NoTree *no); // OK 30/07/2018
+static NoTree *_max_AVLT(NoTree *no); // OK 30/07/2018
 
 /* IMPLEMENTACOES AVLT */
 
@@ -64,6 +62,9 @@ AVLT *new_AVLT(size_t size)
 }
 void delete_AVLT(AVLT **A)
 {
+    clear_AVLT(*A);
+    free(*A);
+    *A = NULL;
 }
 
 /* FUNCOES DE BUSCA */
@@ -83,35 +84,40 @@ NoTree *search_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *))
 }
 
 /* FUNCOES DE INSERCAO */
-void add_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *))
+bool add_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *))
 {
-    A->raiz = _add_AVLT(A, A->raiz, elem, cmp);
+    bool _add = false;
+    A->raiz = _add_AVLT(A, A->raiz, elem, cmp, &_add);
+    return _add;
 }
-static NoTree *_add_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *))
+static NoTree *_add_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *add)
 {
     if (no == NULL)
     {
         A->qtde++;
-        no = new_NoTree(elem, A->size, 0);
+        *add = true;
+        no = new_NoTree(elem, A->size);
     }
     else if (LESS_THAN(cmp(elem, no->dado)))
     {
-        no->esq = _add_AVLT(A, no->esq, elem, cmp);
-        no = _check_unbalanced(no, elem, cmp);
+        no->esq = _add_AVLT(A, no->esq, elem, cmp, add);
+        no = *add ? _check_unbalanced(no, elem, cmp) : no;
     }
     else if (GREATER_THAN(cmp(elem, no->dado)))
     {
-        no->dir = _add_AVLT(A, no->dir, elem, cmp);
-        no = _check_unbalanced(no, elem, cmp);
+        no->dir = _add_AVLT(A, no->dir, elem, cmp, add);
+        no = *add ? _check_unbalanced(no, elem, cmp) : no;
     }
     return no;
 }
 /* FUNCOES DE REMOCAO */
-void remove_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *))
+bool remove_AVLT(AVLT *A, void *elem, int (*cmp)(const void *, const void *))
 {
-    A->raiz = _remove_AVLT(A, A->raiz, elem, cmp);
+    bool _removed = false;
+    A->raiz = _remove_AVLT(A, A->raiz, elem, cmp, &_removed);
+    return _removed;
 }
-static NoTree *_remove_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *))
+static NoTree *_remove_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *removed)
 {
     if (no == NULL)
     {
@@ -120,17 +126,18 @@ static NoTree *_remove_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const vo
     // Movimentando
     if (LESS_THAN(cmp(elem, no->dado)))
     {
-        no->esq = _remove_AVLT(A, no->esq, elem, cmp);
-        no = _check_unbalanced(no, elem, cmp);
+        no->esq = _remove_AVLT(A, no->esq, elem, cmp, removed);
+        no = *removed ? _check_unbalanced(no, elem, cmp) : no;
         return no;
     }
     if (GREATER_THAN(cmp(elem, no->dado)))
     {
-        no->dir = _remove_AVLT(A, no->dir, elem, cmp);
-        no = _check_unbalanced(no, elem, cmp);
+        no->dir = _remove_AVLT(A, no->dir, elem, cmp, removed);
+        no = *removed ? _check_unbalanced(no, elem, cmp) : no;
         return no;
     }
     // Removendo
+    *removed = true;
     if (no->dir == NULL && no->esq == NULL)
     {
         delete_NoTree(&no);
@@ -155,7 +162,7 @@ static NoTree *_remove_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const vo
     NoTree *aux = _min_AVLT(no->dir);
 
     copy_NoTree(no, aux);
-    no->dir = _remove_AVLT(A, no->dir, no->dado, cmp);
+    no->dir = _remove_AVLT(A, no->dir, no->dado, cmp, removed);
     return no;
 }
 void clear_AVLT(AVLT *L)
@@ -281,14 +288,14 @@ static NoTree *rotate_LR_AVLT(NoTree *no)
     return rotate_LL_AVLT(no);
 }
 
-void *min_AVLT(AVLT *B)
+void *min_AVLT(AVLT *A)
 {
-    NoTree *aux = _min_AVLT(B->raiz);
+    NoTree *aux = _min_AVLT(A->raiz);
     return aux == NULL ? NULL : aux->dado;
 }
-void *max_AVLT(AVLT *B)
+void *max_AVLT(AVLT *A)
 {
-    NoTree *aux = _max_AVLT(B->raiz);
+    NoTree *aux = _max_AVLT(A->raiz);
     return aux == NULL ? NULL : aux->dado;
 }
 

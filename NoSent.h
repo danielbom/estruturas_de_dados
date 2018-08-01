@@ -11,8 +11,8 @@ typedef struct NoSent
 
 /* FUNCOES DO NO */
 NoSent *new_NoSent(void *elem, size_t s);                  // OK 18/06/2018
-void copy_NoSent(const NoSent *dest, const NoSent *fonte); // OK 18/07/2018 """" NEED TO TEST """"
-void swap_NoSent(NoSent *a, NoSent *b);                    // TODO
+void copy_NoSent(const NoSent *dest, const NoSent *fonte); // OK 18/07/2018
+void swap_NoSent(NoSent *a, NoSent *b);                    // OK 30/07/2018
 void delete_NoSent(NoSent **N);                            // OK 18/06/2018
 
 /* IMPLEMENTACAO NO */

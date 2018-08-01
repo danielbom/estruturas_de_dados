@@ -1,4 +1,10 @@
+#ifndef NOTREE
+#define NOTREE
+
 #include <stdbool.h>
+
+#define BLACK true
+#define RED false
 
 typedef struct NoTree
 {
@@ -10,13 +16,14 @@ typedef struct NoTree
 } NoTree;
 
 /* FUNCOES DO NO */
-NoTree *new_NoTree(void *elem, size_t s, bool cor);  // OK 18/06/2018
-void copy_NoTree(NoTree *dest, const NoTree *fonte); // OK 18/06/2018
-void swap_NoTree(NoTree *a, NoTree *b);              // TODO
-void delete_NoTree(NoTree **N);                      // OK 18/06/2018
+NoTree *new_NoTree(void *elem, size_t s);            // OK 30/07/2018
+void copy_NoTree(NoTree *dest, const NoTree *fonte); // OK 30/07/2018
+void swap_NoTree(NoTree *a, NoTree *b);              // OK 30/07/2018
+void delete_NoTree(NoTree **no);                     // OK 18/06/2018
+void swap_color(NoTree *no);                         // OK 31/07/2018
 
 /* IMPLEMENTACAO NO */
-NoTree *new_NoTree(void *elem, size_t s, bool cor)
+NoTree *new_NoTree(void *elem, size_t s)
 {
     NoTree *novo = (NoTree *)calloc(1, sizeof(NoTree));
 
@@ -26,7 +33,7 @@ NoTree *new_NoTree(void *elem, size_t s, bool cor)
     memcpy(novo->dado, elem, s);
 
     novo->size = s;
-    novo->cor = cor;
+    novo->cor = false;
 
     return novo;
 }
@@ -42,8 +49,19 @@ void swap_NoTree(NoTree *a, NoTree *b)
     a->dado = b->dado;
     b->dado = tmp;
 }
-void delete_NoTree(NoTree **N)
+void delete_NoTree(NoTree **no)
 {
-    free((*N)->dado);
-    free(*N);
+    free((*no)->dado);
+    free(*no);
 }
+
+void swap_color(NoTree *no)
+{
+    no->cor = !no->cor;
+    if (no->esq)
+        no->esq->cor = !no->esq->cor;
+    if (no->dir)
+        no->dir->cor = !no->dir->cor;
+}
+
+#endif
