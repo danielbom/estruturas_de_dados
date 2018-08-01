@@ -108,28 +108,20 @@ void *shuffle_array(void *array, int length, size_t s)
 {
     /*
      * Este algoritmo tem o objetivo de embaralhar os valores de um vetor.
-     * Para isto, primeiro se embaralha os valores das posições pares no intervalo [0, n/2],
+     * Para isto, primeiro se embaralha os valores das posições do intervalo [0, n/2],
      * com posições aletórias entre o intervalo [n/2, n].
-     * Depois, embaralha os valores das posições impares no intervalo [0, n/2], com posições
-     * aleatórias entre o intervalo [n/2, n].
-     * O processo se repete para valores a uma distancia par no intervalo [n/2, n], com posições
-     * aleatórias entre o intervalo [0, n/2], e por fim, para os valores a uma distancia par no
-     * intervalo [n/2 + 1, n], com valores aleatórios no intervalo [0, n/2].
+     * Por fim, embaralha os valores no intervalo [n/2, n], com valores aleatórios no
+     * intervalo [0, n/2].
      * 
      * Complexidade : n
     */
     srand((unsigned)time(NULL));
     int range = length / 2;
     int begin = length / 2;
-    for (int i = 0; i < (length / 2) * s; i += 2 * s)
+    for (int i = 0; i < (length / 2) * s; i += s)
         swap(array + i, array + s * ((rand() % range) + begin), s);
-    for (int i = s; i < (length / 2) * s; i += 2 * s)
-        swap(array + i, array + s * ((rand() % range) + begin), s);
-
     begin = 0;
-    for (int i = (length - 1) * s; i >= (length / 2) * s; i -= 2 * s)
-        swap(array + i, array + s * ((rand() % range) + begin), s);
-    for (int i = (length - 2) * s; i >= (length / 2) * s; i -= 2 * s)
+    for (int i = (length - 1) * s; i >= (length / 2) * s; i -= s)
         swap(array + i, array + s * ((rand() % range) + begin), s);
 
     return array;
