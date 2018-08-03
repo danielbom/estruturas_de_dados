@@ -3,8 +3,7 @@
 #ifndef ARRAYLIST
 #define ARRAYLIST
 
-#include <stdlib.h> // qsort
-#include "tipos_primarios.h"
+#include "../Util/tipos_primarios.h"
 
 typedef struct
 {

@@ -1,6 +1,5 @@
-#include "../tipos_primarios.h"
-#include "../BST.h"
-#include "../array_int_simple.h"
+#include "../BinarySearchTrees/BST.h"
+#include "../array.h"
 
 /* Driver program to test functions of BST.h */
 

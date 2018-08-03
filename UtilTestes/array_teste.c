@@ -1,5 +1,4 @@
-#include "../array.h"
-#include "../array_int_simple.h"
+#include "../Util/array.h"
 
 void teste_float()
 {

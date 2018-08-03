@@ -1,6 +1,8 @@
 #ifndef NOSENT
 #define NOSENT
 
+#include "../Util/tipos_primarios.h"
+
 typedef struct NoSent
 {
     void *dado;

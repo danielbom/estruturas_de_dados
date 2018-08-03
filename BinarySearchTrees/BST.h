@@ -1,7 +1,7 @@
 // BST -> BinarySearchTree
 
+#include "../tipos_primarios.h"
 #include "NoTree.h"
-#include "tipos_primarios.h"
 
 typedef struct BST
 {

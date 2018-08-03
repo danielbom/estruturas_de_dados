@@ -1,7 +1,5 @@
-#include "../tipos_primarios.h"
-#include "../Lista.h"
-#include "../array_int_simple.h"
-#include <time.h>
+#include "../EstruturasDeDados/Lista.h"
+#include "../Util/array.h"
 
 bool eh_par_int(void *x)
 {
@@ -107,7 +105,7 @@ void ordenacao_teste()
     Lista *L = array_to_Lista(v, length_array, sizeof(int)); // MALLOC L
 
     printf("Array original: ");
-    print_array(v, length_array);
+    print_array(v, length_array, sizeof(int), printInt);
     printf("\n");
 
     print_Lista_ln("Lista original: \0", L, printInt);
@@ -116,7 +114,7 @@ void ordenacao_teste()
     qsort_Lista(L, cmpInt);
 
     printf("Array ordenado: ");
-    print_array(v, length_array);
+    print_array(v, length_array, sizeof(int), printInt);
     printf("\n");
 
     print_Lista_ln("Lista ordenada: \0", L, printInt);

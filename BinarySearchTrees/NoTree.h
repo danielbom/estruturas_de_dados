@@ -33,7 +33,7 @@ NoTree *new_NoTree(void *elem, size_t s)
     memcpy(novo->dado, elem, s);
 
     novo->size = s;
-    novo->cor = false;
+    novo->cor = RED;
 
     return novo;
 }

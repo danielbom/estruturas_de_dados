@@ -1,7 +1,5 @@
-#include "../AVLT.h"
-#include "../array_int_simple.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "../BinarySearchTrees/AVLT.h"
+#include "../array.h"
 
 void printing(AVLT *A)
 {

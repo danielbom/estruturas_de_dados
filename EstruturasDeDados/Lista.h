@@ -27,7 +27,6 @@ FUNCOES DE ORDENACAO
 #ifndef LISTA
 #define LISTA
 
-#include "tipos_primarios.h"
 #include "NoSent.h"
 
 typedef struct

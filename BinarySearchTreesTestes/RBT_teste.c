@@ -1,5 +1,5 @@
-#include "../RBT.h"
-#include "../array_int_simple.h"
+#include "../BinarySearchTrees/RBT.h"
+#include "../array.h"
 #include <stdio.h>
 #include <stdlib.h>
 

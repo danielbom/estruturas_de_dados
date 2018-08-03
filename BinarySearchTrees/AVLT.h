@@ -1,6 +1,6 @@
 // AVL -> Adelson-Velskii & Landis - 1962
 
-#include "tipos_primarios.h"
+#include "../tipos_primarios.h"
 #include "NoTree.h"
 
 typedef struct AVLT
@@ -94,9 +94,12 @@ static NoTree *_add_AVLT(AVLT *A, NoTree *no, void *elem, int (*cmp)(const void 
 {
     if (no == NULL)
     {
-        A->qtde++;
-        *add = true;
         no = new_NoTree(elem, A->size);
+        if (no != NULL)
+        {
+            *add = true;
+            A->qtde++;
+        }
     }
     else if (LESS_THAN(cmp(elem, no->dado)))
     {

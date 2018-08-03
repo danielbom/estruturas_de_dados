@@ -1,5 +1,4 @@
-#include "../array_int_simple.h"
-#include "../primo.h"
+#include "../Util/primo.h"
 
 void teste_grande_primo()
 {
@@ -98,7 +97,7 @@ void teste_fatores_primos()
         int n = LENGTH_PRIME_FACTORS(i);
         bool flag = false;
 
-        if (equals_array(p1, p2, n))
+        if (equals_array(p1, p2, n, sizeof(int), cmpInt))
         {
             printf(" IGUAIS :: ");
         }
@@ -108,11 +107,11 @@ void teste_fatores_primos()
             printf("DIFEREM :: ");
         }
         printf("%d = %d :: ", i, mult_array(p1, n));
-        printz_array(p1, n);
+        printz_array(p1, n, sizeof(int), printInt);
         if (flag)
         {
             printf("\n");
-            printz_array(p2, n);
+            printz_array(p1, n, sizeof(int), printInt);
         }
         printf("\n");
 
@@ -153,7 +152,7 @@ void teste_divisores()
         bool flag = false;
 
         printf("%d :: ", i);
-        if (equals_array(d1, d2, n))
+        if (equals_array(d1, d2, n, sizeof(int), cmpInt))
         {
             printf(" IGUAIS :: ");
         }
@@ -163,11 +162,11 @@ void teste_divisores()
             printf("DIFEREM :: ");
         }
         printf("(%g, %g) :: ", tempo1, tempo2);
-        printz_array(d1, n);
+        printz_array(d1, n, sizeof(int), printInt);
         if (flag)
         {
             printf("\n");
-            printz_array(d2, n);
+            printz_array(d1, n, sizeof(int), printInt);
             system("pause");
             exit(0);
         }

@@ -10,7 +10,7 @@
 #define PRIMO
 
 #include <math.h>
-#include "array_int_simple.h"
+#include "array.h"
 
 // LENGTH_PRIME_FACTORS == log2(x)
 #define LENGTH_PRIME_FACTORS(x) LOG2(x)
@@ -161,7 +161,7 @@ ULLI gen_primos_w(bool run)
 int *divisores_lazy(int num)
 {
     // Identifica os divisores sem optimizações Ondem (n)
-    int *divs = zeros_array(LENGTH_DIVIDERS(num));
+    int *divs = arrayz(LENGTH_DIVIDERS(num), sizeof(int));
     int k = 0;
     for (int i = 2; i <= num / 2; i++)
     {
@@ -176,7 +176,7 @@ int *divisores_lazy(int num)
 int *divisores_optm(int num)
 {
     // Encontra os divisores de um número com optimizações
-    int *divs = zeros_array(LENGTH_DIVIDERS(num)); // MALLOC divs
+    int *divs = arrayz(LENGTH_DIVIDERS(num), sizeof(int)); // MALLOC divs
     int lim = num;
     int k = 0;
     int i, j;
@@ -198,17 +198,13 @@ int *divisores_optm(int num)
         }
     }
     divs[k++] = num;
-    unique_array(divs, k);
+    unique_array(divs, k, sizeof(int), cmpInt);
     return divs;
 }
 
 int *fatores_primos_iter(int n)
 {
-    // Nao é possível retornar o tamanho do vetor resultante
-    // Porém, o tamanho do vetor resultante é dado pela expressão
-    //              log(n)/log(2) == log(n)/M_LN2
-    //                     log(2) == M_LN2
-    int *primos = zeros_array(LENGTH_PRIME_FACTORS(n));
+    int *primos = arrayz(LENGTH_PRIME_FACTORS(n), sizeof(int));
     int k = 0;
     int i = 2;
     while (n != 1)
@@ -232,11 +228,7 @@ int *fatores_primos_iter(int n)
 }
 int *fatores_primos_gen(int n)
 {
-    // Nao é possível retornar o tamanho do vetor resultante
-    // Porém, o tamanho do vetor resultante é dado pela expressão
-    //              log(n)/log(2) == log(n)/M_LN2
-    //                     log(2) == M_LN2
-    int *primos = zeros_array(LENGTH_PRIME_FACTORS(n));
+    int *primos = arrayz(LENGTH_PRIME_FACTORS(n), sizeof(int));
     int k = 0;
     int primo;
     while (n != 1)

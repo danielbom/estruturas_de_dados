@@ -1,6 +1,6 @@
 // RBT -> Red-Black Tree
 
-#include "tipos_primarios.h"
+#include "../tipos_primarios.h"
 #include "NoTree.h"
 
 typedef struct
@@ -18,12 +18,12 @@ void delete_RBT(RBT **RB);
 NoTree *search_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *)); // OK 30/07/2018
 
 /* FUNCOES DE INSERCAO */
-bool add_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *));                                                // TODO
-static NoTree *_add_RBT(RBT *RB, NoTree *no, NoTree *pai, void *elem, int (*cmp)(const void *, const void *), bool *add); // TODO
+bool add_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *));                                   // TODO
+static NoTree *_add_RBT(RBT *RB, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *add); // TODO
 
 /* FUNCOES DE REMOCAO */
-bool remove_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *));                                                    // TODO
-static NoTree *_remove_RBT(RBT *RB, NoTree *no, NoTree *pai, void *elem, int (*cmp)(const void *, const void *), bool *removed); // TODO
+bool remove_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *));                                       // TODO
+static NoTree *_remove_RBT(RBT *RB, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *removed); // TODO
 
 void clear_RBT(RBT *RB); // OK 30/07/2018
 
@@ -35,14 +35,9 @@ void pos_order_RBT(RBT *RB, void (*print)(const void *)); // OK 30/07/2018
 
 static void print_decorator_RBT(const void *dado, void (*print)(const void *)); // OK 30/07/2018
 
-int heigth_RBT(RBT *RB);                  // OK 30/07/2018
-static int _heigth_RBT(NoTree *no);       // OK 30/07/2018
-static int _heigth_black_RBT(NoTree *no); // OK ?
+int heigth_RBT(RBT *RB);            // OK 30/07/2018
+static int _heigth_RBT(NoTree *no); // OK 30/07/2018
 
-static NoTree *_check_remove(NoTree *no, NoTree *pai, void *elem, int (*cmp)(const void *, const void *));
-static NoTree *_check_add(NoTree *no, NoTree *pai, void *elem, int (*cmp)(const void *, const void *));
-static NoTree *_check_colors_remove(NoTree *no, NoTree *pai);
-static NoTree *_check_colors_add(NoTree *no, NoTree *pai);
 static NoTree *_check_unbalanced(NoTree *no, void *elem, int (*cmp)(const void *, const void *)); // TODO
 
 static NoTree *rotate_RR_RBT(NoTree *no); // OK 30/07/2018
@@ -60,7 +55,7 @@ static NoTree *_max_RBT(NoTree *no);
 /* CONSTRUTOR E DESTRUTOR */
 RBT *new_RBT(size_t size)
 {
-    RBT *RB = (RBT *)malloc(sizeof(RBT));
+    RBT *RB = malloc(sizeof(RBT));
     RB->raiz = NULL;
     RB->qtde = 0;
     RB->size = size;
@@ -78,9 +73,9 @@ NoTree *search_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *))
     {
         if (no == NULL)
             return NULL;
-        if (cmp(elem, no->dado) > 0)
+        if (GREATER_THAN(cmp(elem, no->dado)))
             return _search_RBT(no->dir, elem, cmp);
-        if (cmp(elem, no->dado) < 0)
+        if (LESS_THAN(cmp(elem, no->dado)))
             return _search_RBT(no->esq, elem, cmp);
         return no;
     }
@@ -90,30 +85,90 @@ NoTree *search_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *))
 /* FUNCOES DE INSERCAO */
 bool add_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *))
 {
-    bool _add = false;
     if (RB->raiz == NULL)
     {
         RB->raiz = new_NoTree(elem, RB->size);
-        RB->raiz->cor = true;
+        RB->raiz->cor = BLACK;
+        RB->qtde++;
+        return true;
     }
-    else
-    {
-        RB->raiz = _add_RBT(RB, RB->raiz, NULL, elem, cmp, &_add);
-    }
+    bool _add = false;
+    RB->raiz = _add_RBT(RB, RB->raiz, elem, cmp, &_add);
+    RB->qtde += _add;
     return _add;
 }
-static NoTree *_add_RBT(RBT *RB, NoTree *no, NoTree *pai, void *elem, int (*cmp)(const void *, const void *), bool *add)
+static NoTree *_add_RBT(RBT *RB, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *add)
 {
+    if (no == NULL)
+    {
+        no = new_NoTree(elem, RB->size);
+        *add = no != NULL;
+    }
+    else if (LESS_THAN(cmp(elem, no->dado)))
+        no->esq = _add_RBT(RB, no->esq, elem, cmp, add);
+    else if (GREATER_THAN(cmp(elem, no->dado)))
+        no->dir = _add_RBT(RB, no->dir, elem, cmp, add);
+    no = *add ? _check_unbalanced(no, elem, cmp) : no;
+    return no;
 }
 /* FUNCOES DE REMOCAO */
 bool remove_RBT(RBT *RB, void *elem, int (*cmp)(const void *, const void *))
 {
+    if (RB->raiz == NULL)
+        return false;
+
     bool _removed = false;
-    RB->raiz = _remove_RBT(RB, RB->raiz, NULL, elem, cmp, &_removed);
+    RB->raiz = _remove_RBT(RB, RB->raiz, elem, cmp, &_removed);
+    RB->qtde -= _removed;
     return _removed;
 }
-static NoTree *_remove_RBT(RBT *RB, NoTree *no, NoTree *pai, void *elem, int (*cmp)(const void *, const void *), bool *removed)
+static NoTree *_remove_RBT(RBT *RB, NoTree *no, void *elem, int (*cmp)(const void *, const void *), bool *removed)
 {
+    if (no == NULL)
+    {
+        return NULL;
+    }
+    // Movimentando
+    if (LESS_THAN(cmp(elem, no->dado)))
+    {
+        no->esq = _remove_RBT(RB, no->esq, elem, cmp, removed);
+        no = *removed ? _check_unbalanced(no, elem, cmp) : no;
+        return no;
+    }
+    if (GREATER_THAN(cmp(elem, no->dado)))
+    {
+        no->dir = _remove_RBT(RB, no->dir, elem, cmp, removed);
+        no = *removed ? _check_unbalanced(no, elem, cmp) : no;
+        return no;
+    }
+    // Removendo
+    *removed = true;
+    if (no->dir == NULL && no->esq == NULL)
+    {
+        delete_NoTree(&no);
+        RB->qtde--;
+        return NULL;
+    }
+    if (no->dir == NULL && no->esq != NULL)
+    {
+        NoTree *esq = no->esq;
+        delete_NoTree(&no);
+        RB->qtde--;
+        return esq;
+    }
+    if (no->dir != NULL && no->esq == NULL)
+    {
+        NoTree *dir = no->dir;
+        delete_NoTree(&no);
+        RB->qtde--;
+        return dir;
+    }
+
+    NoTree *aux = _min_RBT(no->dir);
+
+    copy_NoTree(no, aux);
+    no->dir = _remove_RBT(RB, no->dir, no->dado, cmp, removed);
+    return no;
 }
 
 void clear_RBT(RBT *RB)
@@ -201,13 +256,49 @@ static int _heigth_RBT(NoTree *no)
     int dir = _heigth_RBT(no->dir);
     return (dir > esq ? dir : esq) + 1;
 }
-static int _heigth_black_RBT(NoTree *no)
+
+static NoTree *_check_unbalanced(NoTree *no, void *elem, int (*cmp)(const void *, const void *))
 {
-    if (no == NULL)
-        return 1;
-    int esq = _heigth_black_RBT(no->esq);
-    int dir = _heigth_black_RBT(no->dir);
-    return (dir > esq ? dir : esq) + is_black(no);
+    if (no)
+    {
+        if (no->esq && no->esq->cor == RED)
+        {
+            if (no->esq->esq && no->esq->esq->cor == RED)
+                no = rotate_RR_RBT(no);
+            if (no->esq->dir && no->esq->dir->cor == RED)
+                no = rotate_RL_RBT(no);
+        }
+        if (no->dir && no->dir->cor == RED)
+        {
+            if (no->dir->dir && no->dir->dir->cor == RED)
+                no = rotate_LL_RBT(no);
+            if (no->dir->esq && no->dir->esq->cor == RED)
+                no = rotate_LR_RBT(no);
+        }
+        if (no->esq && no->dir)
+        {
+            if (no->esq == RED && no->dir == RED)
+            {
+                if (no->esq->esq && no->esq->esq == RED)
+                {
+                    swap_color(no);
+                }
+                else if (no->esq->dir && no->esq->dir == RED)
+                {
+                    swap_color(no);
+                }
+                else if (no->dir->dir && no->dir->dir == RED)
+                {
+                    swap_color(no);
+                }
+                else if (no->dir->esq && no->dir->esq == RED)
+                {
+                    swap_color(no);
+                }
+            }
+        }
+    }
+    return no;
 }
 
 static NoTree *rotate_RR_RBT(NoTree *no)

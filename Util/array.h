@@ -21,6 +21,11 @@ int find_array(void *array, int length, void *element, size_t s, int (*cmp)(cons
 int max_array(void *array, int length, size_t s, int (*cmp)(const void *, const void *));                 // OK
 int min_array(void *array, int length, size_t s, int (*cmp)(const void *, const void *));                 // OK
 
+/* INT */
+int *random_array(int begin, int end, int array_length);
+int mult_array(int *v, int n);
+int sum_array(int *v, int n);
+
 /* IMPLEMENTAÇÕES */
 
 void print_if_array(void *array, int length, size_t s, void (*print)(const void *), bool (*condicao)(const void *))
@@ -160,4 +165,34 @@ int min_array(void *array, int length, size_t s, int (*cmp)(const void *, const 
     return min / s;
 }
 
+/* INT */
+int *random_array(int begin, int end, int array_length)
+{
+    if (begin > end)
+        swap(&begin, &end, sizeof(int));
+
+    int *v = (int *)malloc(array_length * sizeof(int));
+
+    int range = end - begin;
+
+    srand((unsigned)time(NULL));
+    for (int i = 0; i < array_length; i++)
+        v[i] = (rand() % range) + begin;
+
+    return v;
+}
+int mult_array(int *v, int n)
+{
+    int m = 1;
+    for (int i = 0; i < n; i++)
+        m *= v[i] ? v[i] : 1;
+    return m;
+}
+int sum_array(int *v, int n)
+{
+    int s = 0;
+    for (int i = 0; i < n; i++)
+        s += v[i];
+    return s;
+}
 #endif
