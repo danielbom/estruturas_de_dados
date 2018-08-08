@@ -56,8 +56,33 @@ void teste_int()
     free(ar); // FREE ar
 }
 
+void teste_resize()
+{
+    int *ar = random_array(0, 50, 10);
+    print_array(ar, 10, sizeof(int), printInt);
+    printf("\n");
+    print_array(resize_array(ar, 10, 20, sizeof(int)), 20, sizeof(int), printInt);
+    printf("\n");
+}
+
+void teste_random_float()
+{
+    int n = 10;
+    float *r = random_arrayf(0, 1, n);
+    printf("\n");
+    print_array(r, n, sizeof(float), printFloat);
+    printf("\n");
+}
+void teste_random_double()
+{
+    int n = 10;
+    double *r = random_arraylf(0, 1, n);
+    printf("\n");
+    print_array(r, n, sizeof(double), printLongDouble);
+    printf("\n");
+}
 int main()
 {
-    teste_int();
+    teste_random_double();
     return 0;
 }

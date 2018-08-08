@@ -1,12 +1,27 @@
 #ifndef tipos_primarios
 #define tipos_primarios
 
-#include <stdio.h>  // printf
-#include <stdlib.h> // malloc, talvez nao necessario
-#include <string.h> // strcmp
-#include <stdbool.h>
-#include <assert.h>
+/*
+ * Marcador static
+ * 
+ * Funções e variáveis globais com este marcador são visíveis apenas pelo arquivo gerador delas.
+ * 
+ * Variáveis locais com este marcador possuem a capacidade de mater seu valor após o encerramento
+ * da função.
+*/
+
+#include <stdio.h>   // printf
+#include <stdlib.h>  // malloc, talvez nao necessario
+#include <string.h>  // strcmp
+#include <stdbool.h> // tipo bool
+#include <assert.h>  // função assert
 #include <time.h>
+#include <math.h>
+#include <inttypes.h>
+
+#ifndef LLI
+#define LLI long long int
+#endif
 
 #ifndef ULLI
 #define ULLI unsigned long long int
@@ -59,6 +74,10 @@ double toDouble(const void *v)
 {
     return *(double *)v;
 }
+long double toLongDouble(const void *v)
+{
+    return *(long double *)v;
+}
 char toChar(const void *v)
 {
     return *(char *)v;
@@ -103,9 +122,21 @@ void printFloat(const void *v)
 {
     printf("%f", toFloat(v));
 }
+void printSimpleDouble(const void *v)
+{
+    printf("%.0lf", toDouble(v));
+}
 void printDouble(const void *v)
 {
     printf("%lf", toDouble(v));
+}
+void printExtendDouble(const void *v)
+{
+    printf("%.16lf", toDouble(v));
+}
+void printLongDouble(const void *v)
+{
+    printf("%Lf", toLongDouble(v));
 }
 void printChar(const void *v)
 {
@@ -117,7 +148,7 @@ void printString(const void *v)
 }
 void printULLI(const void *v)
 {
-    printf("%ull", toULLI(v));
+    printf("%" PRIu64, toULLI(v));
 }
 
 /* COMPARACAO DE TIPOS PRIMARIOS */

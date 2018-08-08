@@ -35,7 +35,7 @@ bool eh_primo(ULLI num);
 ULLI gen_primos_w(bool run);
 ULLI gen_primos_2(bool run);
 
-#define GEN_PRIMES(x) gen_primos_2(x)
+#define GEN_PRIMES(x) gen_primos(x)
 
 int *fatores_primos_iter(int n);
 int *fatores_primos_gen(int n);
@@ -44,7 +44,9 @@ int *fatores_primos_gen(int n);
 
 int *divisores_lazy(int num);
 int *divisores_optm(int num);
+ULLI *divisores_ulli(ULLI num);
 
+#define DIVIDERS_ULLI(x) divisores_ulli(x)
 #define DIVIDERS(x) divisores_optm(x)
 
 /* IMPLEMENTAÇÕES DAS FUNÇÕES */
@@ -105,6 +107,20 @@ bool eh_primo(ULLI num)
  * A variavel run mantem o gerador ligado enquanto true.
  * Se false, reinicia o gerador.
 */
+ULLI gen_primos(bool run)
+{
+    static ULLI i = 2;
+    ULLI r;
+    if (run)
+    {
+        while (!IS_PRIME(i))
+            i++;
+        r = i;
+        i++;
+        return r;
+    }
+    i = 2;
+}
 ULLI gen_primos_2(bool run)
 {
     static ULLI i = 2;
@@ -160,6 +176,7 @@ ULLI gen_primos_w(bool run)
 
 int *divisores_lazy(int num)
 {
+    assert(num >= 0);
     // Identifica os divisores sem optimizações Ondem (n)
     int *divs = arrayz(LENGTH_DIVIDERS(num), sizeof(int));
     int k = 0;
@@ -175,6 +192,7 @@ int *divisores_lazy(int num)
 }
 int *divisores_optm(int num)
 {
+    assert(num >= 0);
     // Encontra os divisores de um número com optimizações
     int *divs = arrayz(LENGTH_DIVIDERS(num), sizeof(int)); // MALLOC divs
     int lim = num;
@@ -198,12 +216,42 @@ int *divisores_optm(int num)
         }
     }
     divs[k++] = num;
-    unique_array(divs, k, sizeof(int), cmpInt);
+    unique_array(divs, k + 1, sizeof(int), cmpInt);
+    return divs;
+}
+
+ULLI *divisores_ulli(ULLI num)
+{
+    // Encontra os divisores de um número com optimizações
+    ULLI *divs = arrayz(LENGTH_DIVIDERS(num), sizeof(ULLI)); // MALLOC divs
+    ULLI lim = num;
+    int k = 0;
+    int i, j;
+    if (!IS_PRIME(num))
+    {
+        for (i = 2; i < lim; i++)
+        {
+            if (num % i == 0)
+            {
+                divs[k++] = i;
+                divs[k++] = num / i;
+                lim = num / i;
+                if (IS_PRIME(lim))
+                { // Impede o pior caso Ordem(n)
+                    divs[k++] = lim;
+                    lim = 0;
+                }
+            }
+        }
+    }
+    divs[k++] = num;
+    unique_array(divs, k + 1, sizeof(ULLI), cmpInt);
     return divs;
 }
 
 int *fatores_primos_iter(int n)
 {
+    assert(n >= 0);
     int *primos = arrayz(LENGTH_PRIME_FACTORS(n), sizeof(int));
     int k = 0;
     int i = 2;
@@ -228,6 +276,7 @@ int *fatores_primos_iter(int n)
 }
 int *fatores_primos_gen(int n)
 {
+    assert(n >= 0);
     int *primos = arrayz(LENGTH_PRIME_FACTORS(n), sizeof(int));
     int k = 0;
     int primo;

@@ -166,7 +166,8 @@ void teste_divisores()
         if (flag)
         {
             printf("\n");
-            printz_array(d1, n, sizeof(int), printInt);
+            printz_array(d2, n, sizeof(int), printInt);
+            printf("\n");
             system("pause");
             exit(0);
         }
@@ -210,7 +211,7 @@ void teste_gerador_primos()
 
 int main()
 {
-    teste_grande_primo();
+    teste_divisores();
     system("pause");
     return 0;
 }

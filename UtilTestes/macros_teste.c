@@ -73,10 +73,13 @@ void sizeof_tipos()
     printf("sizeof(void*): %d\n", sizeof(void *));
     printf("sizeof(char): %d\n", sizeof(char));
     printf("sizeof(int): %d\n", sizeof(int));
+    printf("sizeof(bool): %d\n", sizeof(bool));
     printf("sizeof(long): %d\n", sizeof(long));
     printf("sizeof(float): %d\n", sizeof(float));
     printf("sizeof(double): %d\n", sizeof(double));
+    printf("sizeof(unsigned char): %d\n", sizeof(unsigned char));
     printf("sizeof(unsigned int): %d\n", sizeof(unsigned int));
+    printf("sizeof(unsigned long long): %d\n", sizeof(unsigned long long));
     printf("sizeof(long long): %d\n", sizeof(long long));
     printf("sizeof(long long int): %d\n", sizeof(long long int));
     printf("sizeof(long double): %d\n", sizeof(long double));
@@ -222,7 +225,7 @@ int main()
 {
     //setlocale(LC_ALL, "Portuguese");
     //teste_constantes_macros();
-    //sizeof_tipos();
+    sizeof_tipos();
     //teste_complexo();
     //teste_math_h();
     //teste_enum();

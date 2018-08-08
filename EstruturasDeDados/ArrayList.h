@@ -4,10 +4,11 @@
 #define ARRAYLIST
 
 #include "../Util/tipos_primarios.h"
+#include "../Util/array.h"
 
 typedef struct
 {
-    void **array; // vetor de ponteiros
+    void *array; // vetor de ponteiros
     int qtde;
     int tam;
     size_t size;
@@ -51,28 +52,25 @@ void remove_if_ArrayList(ArrayList *ar, bool (*condicao)(void *));              
 void clear_ArrayList(ArrayList *ar); // TODO
 
 /* FUNCOES AUXILIARES */
-void print_ArrayList(ArrayList *ar, void (*print)(const void *));                                    // TODO
-void print_if_ArrayList(ArrayList *ar, void (*print)(const void *), bool (*condicao)(const void *)); // TODO
+void print_ArrayList(ArrayList *ar, void (*print)(const void *));                                    // OK 03/08/2018
+void print_if_ArrayList(ArrayList *ar, void (*print)(const void *), bool (*condicao)(const void *)); // OK 03/08/2018
 
 bool is_sorted_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *));   // TODO
 bool is_reversed_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // TODO
 
-double sum_ArrayList(ArrayList *ar, double (*cast)(const void *));  // TODO
-double mult_ArrayList(ArrayList *ar, double (*cast)(const void *)); // TODO
+void dup_ArrayList(ArrayList *fonte); // TODO
 
-void copy_ArrayList(ArrayList *dest, const ArrayList *fonte); // TODO
+void unique_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // OK 03/08/2018
 
-void unique_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // TODO
+bool empyt_ArrayList(ArrayList *ar); // OK 25/07/2018
 
-bool empyt_ArrayList(ArrayList *ar); // 25/07/2018
+void reverse_ArrayList(ArrayList *ar); // OK 03/08/2018
 
-void reverse_ArrayList(ArrayList *ar); // TODO
+void *ArrayList_to_array(ArrayList *ar); // OK 03/08/2018
 
-void *ArrayList_to_array(ArrayList *ar); // TODO
+void swap_ArrayList(ArrayList *ar1, ArrayList *ar2); // OK 03/08/2018
 
-void swap_ArrayList(ArrayList *ar1, ArrayList *ar2); // 25/07/2018
-
-bool equals_ArrayList(ArrayList *ar1, ArrayList *ar2); // TODO
+bool equals_ArrayList(ArrayList *ar1, ArrayList *ar2); // OK 03/08/2018
 
 /* FUNCOES DE ORDENACAO */
 void sort_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // 25/07/2018
@@ -96,19 +94,50 @@ void realloc_ArrayList(ArrayList *ar, int tam) {}
 void delete_ArrayList(ArrayList **ar) {}
 
 /* FUNCOES AUXILIARES */
+void print_ArrayList(ArrayList *ar, void (*print)(const void *))
+{
+    print_array(ar->array, ar->qtde, ar->size, print);
+}
+
+void print_if_ArrayList(ArrayList *ar, void (*print)(const void *), bool (*condicao)(const void *))
+{
+    print_if_array(ar->array, ar->qtde, ar->size, print, condicao);
+}
+
+void unique_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *))
+{
+    unique_array(ar->array, ar->qtde, ar->size, cmp);
+}
+
 bool empyt_ArrayList(ArrayList *ar)
 {
     return ar->qtde == 0;
 }
 
+void reverse_ArrayList(ArrayList *ar)
+{
+    reverse_array(ar->array, ar->qtde, ar->size);
+}
+
+void *ArrayList_to_array(ArrayList *ar)
+{
+    return ar->array;
+}
+
 void swap_ArrayList(ArrayList *ar1, ArrayList *ar2)
 {
-    swap(ar1->array, ar2->array, sizeof(void **));
+    pswap(ar1->array, ar2->array);
     swap(ar1->qtde, ar2->qtde, sizeof(int));
     swap(ar1->tam, ar2->tam, sizeof(int));
     swap(ar1->size, ar2->size, sizeof(size_t));
 }
 
+bool equals_ArrayList(ArrayList *ar1, ArrayList *ar2, int (*cmp)(const void *, const void *))
+{
+    if (ar1->qtde != ar2->qtde)
+        return false;
+    return equals_array(ar1->array, ar2->array, ar1->qtde, ar1->size, cmp);
+}
 /* FUNCOES DE ORDENACAO */
 void sort_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *))
 {

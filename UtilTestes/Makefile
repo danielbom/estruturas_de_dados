@@ -4,7 +4,7 @@ CXX=g++
 all: testes
 
 testes:
-	${CC} primo_teste.c -o primos.exe
+	${CC} array_teste.c -o array.exe
 	${CC} macros_teste.c -o macros.exe
 	${CC} primo_teste.c -o primo.exe
 	
