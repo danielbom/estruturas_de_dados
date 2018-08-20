@@ -19,9 +19,7 @@
 #include <math.h>
 #include <inttypes.h>
 
-#ifndef LLI
-#define LLI long long int
-#endif
+#define M_TAU 6.28318530717958647692
 
 #ifndef ULLI
 #define ULLI unsigned long long int
