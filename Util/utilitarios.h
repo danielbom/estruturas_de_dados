@@ -2,6 +2,7 @@
 
 // Limite max: n = 170
 double factorial(double n);
+double factorial_partial(double n, double k);
 
 #define GEN_FIBBONATTI(x) gen_fibbonatti(x)
 
@@ -25,10 +26,23 @@ double combination(double n, double k);
 
 double factorial(double n)
 {
+    n = trunc(n);
     if (n <= 0)
         return 1;
     double x = n;
     while (--n)
+        x *= n;
+    return x;
+}
+
+double factorial_partial(double n, double k)
+{
+    n = trunc(n);
+    k = trunc(k);
+    if (n <= 0)
+        return 1;
+    double x = n;
+    while (--n > k)
         x *= n;
     return x;
 }
@@ -80,15 +94,18 @@ int sum_n(int begin, int end)
     return (end * (end + 1) / 2) - (begin * (begin + 1) / 2);
 }
 
-double inline permutation(double n)
+double permutation(double n)
 {
     return factorial(n);
 }
-double arranjo(double n, double k)
+double arrangement(double n, double k)
 {
-    return factorial(n) / factorial(n - k);
+    //return factorial(n) / factorial(n - k);
+    return factorial_partial(n, n - k);
 }
 double combination(double n, double k)
 {
-    return factorial(n) / (factorial(k) * factorial(n - k));
+    double min = k < (n - k) ? k : n - k;
+    //return factorial(n) / (factorial(k) * factorial(n - k));
+    return arrangement(n, min) / factorial(min);
 }
