@@ -16,7 +16,7 @@ int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, 
 
 void *shuffle_array(void *array, size_t length, size_t s); // OK
 
-void reverse_array(void *array, size_t length, size_t s); // OK
+void *reverse_array(void *array, size_t length, size_t s); // OK
 
 bool equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
 
@@ -61,6 +61,7 @@ double mult_arraylf(double *v, int n);
 double sum_arraylf(double *v, int n);
 /* IMPLEMENTAÇÕES */
 
+/* Faz a impressão do array enquanto a condição é satisfeita. */
 void print_if_array(void *array, size_t length, size_t s, void (*print)(const void *), bool (*condicao)(const void *))
 {
     printf("( ");
@@ -72,6 +73,7 @@ void print_if_array(void *array, size_t length, size_t s, void (*print)(const vo
     }
     printf(")");
 }
+/* Faz a impressão de todo o array. */
 void print_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
     bool condicao(const void *element)
@@ -80,6 +82,7 @@ void print_array(void *array, size_t length, size_t s, void (*print)(const void 
     }
     print_if_array(array, length, s, print, condicao);
 }
+/* Faz a impressão do array até o primeiro valor nulo. */
 void printz_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
     bool condicao(const void *element)
@@ -89,32 +92,36 @@ void printz_array(void *array, size_t length, size_t s, void (*print)(const void
     print_if_array(array, length, s, print, condicao);
 }
 
+/* Cria um array de tamanho length do tamanho do tipo s, inicialmente inicializado com zeros. */
 void *arrayz(size_t length, size_t s)
 {
     return calloc(length, s);
 }
 
+/* Duplica o array enviado e retorna um ponteiro do resultado. */
 void *dup_array(void *array, size_t length, size_t s)
 {
     return memcpy(arrayz(length, s), array, length * s);
 }
 
+/* Faz a copia do array fonte(source) para o array destino(destiny) e retorna o ponteiro do destino. */
 void *copy_array(void *destiny, void *source, size_t length, size_t s)
 {
     return memcpy(destiny, source, s * length);
 }
 
+/*
+ * Este algoritmo busca deixar o array apenas com valores únicos, isto é, sem repetição.
+ * Para isto, cada elemento repetido é substituído pelo valor 0.
+ * Por fim um vetor auxiliar é criado para posicionar os valores não nulos no início do array recebido.
+ * Esta função retorna o novo tamanho do vetor sem as repetições, mas não modifica o seu tamanho
+ * original.
+ * 
+ * Complexidade : n * lg n
+*/
+/* Remove valores duplicados do array. */
 int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
-    /*
-     * Este algoritmo busca deixar o array apenas com valores únicos, isto é, sem repetição.
-     * Para isto, cada elemento repetido é substituído pelo valor 0.
-     * Por fim um vetor auxiliar é criado para posicionar os valores não nulos no início do array recebido.
-     * Esta função retorna o novo tamanho do vetor sem as repetições, mas não modifica o seu tamanho
-     * original.
-     * 
-     * Complexidade : n * lg n
-    */
     qsort(array, length, s, cmp);
     int n, i, j;
     for (i = n = 0; i < (length - 1) * s; i += s, n++)
@@ -145,17 +152,18 @@ int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, 
     return n;
 }
 
+/*
+ * Este algoritmo tem o objetivo de embaralhar os valores de um vetor.
+ * Para isto, primeiro se embaralha os valores das posições do intervalo [0, n/2],
+ * com posições aletórias entre o intervalo [n/2, n].
+ * Por fim, embaralha os valores no intervalo [n/2, n], com valores aleatórios no
+ * intervalo [0, n/2].
+ * 
+ * Complexidade : n
+*/
+/* Embarralha os valores do array. */
 void *shuffle_array(void *array, size_t length, size_t s)
 {
-    /*
-     * Este algoritmo tem o objetivo de embaralhar os valores de um vetor.
-     * Para isto, primeiro se embaralha os valores das posições do intervalo [0, n/2],
-     * com posições aletórias entre o intervalo [n/2, n].
-     * Por fim, embaralha os valores no intervalo [n/2, n], com valores aleatórios no
-     * intervalo [0, n/2].
-     * 
-     * Complexidade : n
-    */
     srand((unsigned)time(NULL));
     int range = length / 2;
     int begin = length / 2;
@@ -168,12 +176,15 @@ void *shuffle_array(void *array, size_t length, size_t s)
     return array;
 }
 
-void reverse_array(void *array, size_t length, size_t s)
+/* Inverte a ordem do array e retorna o array. */
+void *reverse_array(void *array, size_t length, size_t s)
 {
     for (int i = 0, j = (length - 1) * s; i < j; i += s, j -= s)
         swap(array + i, array + j, s);
+    return array;
 }
 
+/* Verifica se o array ar1 é igual ao array ar2. */
 bool equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
     int n = s * length;
@@ -186,6 +197,7 @@ bool equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(cons
     return true;
 }
 
+/* Retorna a posição da primeira ocorrencia do elemento no array. */
 int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
     for (int i = 0; i < length; i += s)
@@ -194,6 +206,7 @@ int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(c
     return -1;
 }
 
+/* Retorna a posição do maior valor do array. */
 int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
     int max = 0;
@@ -202,6 +215,7 @@ int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, con
             max = i;
     return max / s;
 }
+/* Retorna a posição do menor valor do array. */
 int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
     int min = 0;
@@ -211,8 +225,7 @@ int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, con
     return min / s;
 }
 
-// Espero que esses define sejam sempre inline
-
+/* Realoca o array para um novo tamanho. */
 #define resize_array(array, length, new_length, s) ({array = _resize_array(array, length, new_length, s); array; })
 static void *_resize_array(void *array, size_t length, int new_length, size_t s)
 {
