@@ -37,6 +37,16 @@ enum week
 
 #define DPRINT(fmt, ...) printf("DEBUG: " fmt "\\n", ##__VA_ARGS__)
 
+#define type_name(T)           \
+    _Generic((T),              \
+             char              \
+             : "char",         \
+               int             \
+             : "int",          \
+               float           \
+             : "float" default \
+             : "other")
+
 void func(int nb, void (*f)(int))
 {
     int i;
@@ -225,7 +235,7 @@ int main()
 {
     //setlocale(LC_ALL, "Portuguese");
     //teste_constantes_macros();
-    sizeof_tipos();
+    //sizeof_tipos();
     //teste_complexo();
     //teste_math_h();
     //teste_enum();
