@@ -1,33 +1,36 @@
-#include "../EstruturasDeDados/Pilha.h"
+#include "../EstruturasDeDados/stack.h"
 #include "../Util/array.h"
 
-/* Driver program to test functions of Pilha.h */
+/* Driver program to test functions of stack.h */
 int main()
 {
     int n = 50;
     int *v = random_array(1, 900, n);  // MALLOC v
-    Pilha *P = new_Pilha(sizeof(int)); // MALLOC P
+    stack *P = new_stack(sizeof(int)); // MALLOC P
 
     for (int i = 0; i < n; i++)
     {
-        push_Pilha(P, &v[i]);
+        push_stack(P, &v[i]);
     }
 
-    print_Pilha(P, printInt);
-
-    reverse_Pilha(&P);
-
+    printf("\n");
+    print_stack(P, printInt);
     printf("\n");
 
-    print_Pilha(P, printInt);
-    pop_Pilha(P);
+    reverse_stack(&P);
+
+    printf("\n");
+    print_stack(P, printInt);
     printf("\n");
 
-    print_Pilha(P, printInt);
+    pop_stack(P);
+    printf("\n");
+    print_stack(P, printInt);
+    printf("\n");
 
     free(v);          // FREE v
-    delete_Pilha(&P); // FREE P
+    delete_stack(&P); // FREE P
 
-    system("pause");
+    //system("pause");
     return 0;
 }
