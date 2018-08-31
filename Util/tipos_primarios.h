@@ -18,6 +18,7 @@
 #include <time.h>
 #include <math.h>
 #include <inttypes.h>
+#include "error.h"
 
 #define M_TAU 6.28318530717958647692
 
