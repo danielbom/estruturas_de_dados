@@ -2,7 +2,7 @@
 #define ARRAY
 #include "tipos_primarios.h"
 
-static double ZERO = 0;
+static double ARRAY__ZERO = 0;
 
 void print_if_array(void *array, size_t length, size_t s, void (*print)(const void *), bool (*condicao)(const void *)); // OK
 void print_array(void *array, size_t length, size_t s, void (*print)(const void *));                                    // OK
@@ -76,6 +76,7 @@ void print_if_array(void *array, size_t length, size_t s, void (*print)(const vo
 /* Faz a impressão de todo o array. */
 void print_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
+    // Dependencias: print_if_array
     bool condicao(const void *element)
     {
         return true;
@@ -85,9 +86,10 @@ void print_array(void *array, size_t length, size_t s, void (*print)(const void 
 /* Faz a impressão do array até o primeiro valor nulo. */
 void printz_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
+    // Dependencias: print_if_array
     bool condicao(const void *element)
     {
-        return toDouble(element) != ZERO;
+        return toDouble(element) != ARRAY__ZERO;
     }
     print_if_array(array, length, s, print, condicao);
 }
@@ -101,7 +103,7 @@ void *arrayz(size_t length, size_t s)
 /* Duplica o array enviado e retorna um ponteiro do resultado. */
 void *dup_array(void *array, size_t length, size_t s)
 {
-    return memcpy(arrayz(length, s), array, length * s);
+    return memcpy(calloc(length, s), array, length * s);
 }
 
 /* Faz a copia do array fonte(source) para o array destino(destiny) e retorna o ponteiro do destino. */
@@ -122,6 +124,7 @@ void *copy_array(void *destiny, void *source, size_t length, size_t s)
 /* Remove valores duplicados do array. */
 int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
+    // Dependencias: tipos_primarios.h
     qsort(array, length, s, cmp);
     int n, i, j;
     for (i = n = 0; i < (length - 1) * s; i += s, n++)
@@ -130,19 +133,19 @@ int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, 
         {
             void *elem = array + i;
             for (i += s; i < length * s && EQUAL_TO(cmp(elem, array + i)); i += s)
-                memcpy(array + i, &ZERO, s);
+                memcpy(array + i, &ARRAY__ZERO, s);
             i -= s;
         }
     }
     if (n < length)
     {
-        void *tmp = arrayz(n, s); // MALLOC tmp
+        void *tmp = calloc(n, s); // MALLOC tmp
         for (i = j = 0; i < length * s; i += s)
         {
-            if (NOT_EQUAL_TO(cmp(array + i, &ZERO)))
+            if (NOT_EQUAL_TO(cmp(array + i, &ARRAY__ZERO)))
             {
                 memcpy(tmp + j, array + i, s);
-                memcpy(array + i, &ZERO, s);
+                memcpy(array + i, &ARRAY__ZERO, s);
                 j += s;
             }
         }
@@ -164,6 +167,7 @@ int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, 
 /* Embarralha os valores do array. */
 void *shuffle_array(void *array, size_t length, size_t s)
 {
+    // Dependencias: tipos_primarios.h
     srand((unsigned)time(NULL));
     int range = length / 2;
     int begin = length / 2;
@@ -179,6 +183,7 @@ void *shuffle_array(void *array, size_t length, size_t s)
 /* Inverte a ordem do array e retorna o array. */
 void *reverse_array(void *array, size_t length, size_t s)
 {
+    // Dependencias: tipos_primarios.h
     for (int i = 0, j = (length - 1) * s; i < j; i += s, j -= s)
         swap(array + i, array + j, s);
     return array;
@@ -187,6 +192,7 @@ void *reverse_array(void *array, size_t length, size_t s)
 /* Verifica se o array ar1 é igual ao array ar2. */
 bool equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
+    // Dependencias: tipos_primarios.h
     int n = s * length;
     for (int i = 0; i < n; i += s)
         if (NOT_EQUAL_TO(cmp(ar1 + i, ar2 + i)))
@@ -200,6 +206,7 @@ bool equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(cons
 /* Retorna a posição da primeira ocorrencia do elemento no array. */
 int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
+    // Dependencias: tipos_primarios.h
     for (int i = 0; i < length; i += s)
         if (EQUAL_TO(cmp(array + i, element)))
             return i / s;
@@ -209,6 +216,7 @@ int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(c
 /* Retorna a posição do maior valor do array. */
 int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
+    // Dependencias: tipos_primarios.h
     int max = 0;
     for (int i = 1; i < length; i += s)
         if (GREATER_THAN(cmp(array + i, array + max)))
@@ -218,6 +226,7 @@ int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, con
 /* Retorna a posição do menor valor do array. */
 int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
+    // Dependencias: tipos_primarios.h
     int min = 0;
     for (int i = 1; i < length; i += s)
         if (LESS_THAN(cmp(array + i, array + min)))
@@ -229,7 +238,8 @@ int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, con
 #define resize_array(array, length, new_length, s) ({array = _resize_array(array, length, new_length, s); array; })
 static void *_resize_array(void *array, size_t length, int new_length, size_t s)
 {
-    void *new = copy_array(arrayz(new_length, s), array, (length < new_length ? length : new_length), s);
+    // Dependencias: copy_array
+    void *new = copy_array(calloc(new_length, s), array, (length < new_length ? length : new_length), s);
     free(array);
     return new;
 }
@@ -237,7 +247,7 @@ static void *_resize_array(void *array, size_t length, int new_length, size_t s)
 #define remove_if_array(array, length, s, condicao) ({array = _remove_if(array, length, s, condicao); array; })
 static void *_remove_if_array(void *array, size_t length, size_t s, bool (*condicao)(const void *))
 {
-    void *new = arrayz(length, s);
+    void *new = calloc(length, s);
     int n = length * s;
     for (int i = 0, j = 0; i < n; i += s)
         if (!condicao(array + i))
@@ -249,6 +259,7 @@ static void *_remove_if_array(void *array, size_t length, size_t s, bool (*condi
 #define update_array(ar1, len1, ar2, len2, s) ({ar1 = _update_array(ar1, len1, ar2, len2, s); ar1; })
 static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s)
 {
+    // Dependencias: resize_array, copy_array
     resize_array(ar1, len1, len1 + len2, s);
     copy_array(ar1 + len1 * s, ar2, len2, s);
     return ar1;
@@ -257,10 +268,11 @@ static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_
 /* INT */
 int *random_array(int begin, int end, int n)
 {
+    // Dependencias: tipos_primarios.h
     if (begin > end)
         swap(&begin, &end, sizeof(int));
 
-    int *v = arrayz(n, sizeof(int));
+    int *v = calloc(n, sizeof(int));
 
     int range = end - begin;
 
@@ -288,10 +300,11 @@ int sum_array(int *v, int n)
 /* FLOAT */
 float *random_arrayf(float begin, float end, int n)
 {
+    // Dependencias: tipos_primarios.h
     if (begin > end)
         swap(&begin, &end, sizeof(float));
 
-    float *v = arrayz(n, sizeof(float));
+    float *v = calloc(n, sizeof(float));
 
     const int MAX = 1e6;
 
@@ -321,10 +334,11 @@ float sum_arrayf(float *v, int n)
 /* DOUBLE */
 double *random_arraylf(double begin, double end, int n)
 {
+    // Dependencias: tipos_primarios.h
     if (begin > end)
         swap(&begin, &end, sizeof(double));
 
-    double *v = arrayz(n, sizeof(double));
+    double *v = calloc(n, sizeof(double));
 
     const ULLI MAX = 1e16;
 
