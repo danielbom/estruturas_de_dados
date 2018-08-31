@@ -2,9 +2,6 @@
 
 char *replace_string(char const *const original, char const *const pattern, char const *const replacement)
 {
-    /*
-     * Dependencias: string.h
-    */
     size_t const replacement_length = strlen(replacement);
     size_t const original_length = strlen(original);
     size_t const pattern_length = strlen(pattern);
@@ -44,9 +41,6 @@ char *replace_string(char const *const original, char const *const pattern, char
 
 char **split_string(char *original, char *pattern, int *parts)
 {
-    /*
-     * Dependencias: string.h
-    */
     size_t pattern_length = strlen(pattern);
     size_t n = 0;
     char *p;
@@ -93,9 +87,6 @@ int count_caracter(char *original, char caracter)
 
 int count_substrings(char *original, char *pattern)
 {
-    /*
-     * Dependencias: string.h 
-    */
     size_t const pattern_length = strlen(pattern);
     int count = 0;
     char *p, *token;
