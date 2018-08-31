@@ -15,10 +15,11 @@
 #define _bit(position) (1 << position)
 #define set_bit(bits, position) bits = bits | _bit(position)
 #define unset_bit(bits, position) bits = bits & ~_bit(position)
+#define is_set_bit(bits, mask) ((bits & mask) == mask)
 
-char leds_states = GREEN; // Estado dos leds
-char light_up = TRUE;     // Posso acender
-char to_press = TRUE;     // Posso precionar
+char leds_states = GREEN; // Estado dos leds.
+char light_up = TRUE;     // Posso acender.
+char to_press = TRUE;     // Posso precionar.
 
 unsigned long int timer;
 unsigned long int limite_timer = 1000;
@@ -32,24 +33,25 @@ void setup()
 {
     // pinMode(2, INPUT_PULLUP); // 2
     // Para simular a situação acima, deve ser executada as 2 funções abaixo.
-    set_bit(PORTD, PD2);  // 2 - Configuro como saida
-    set_bit(PIND, PIND2); // 2 - Configuro como saida ?
+    set_bit(PORTD, PD2);  // 2 - Seleciono como saida (Valor inicial).
+    set_bit(PIND, PIND2); // 2 - Seleciono como saida (Leitura).
 
-    set_bit(DDRD, DD7);  // 7 - Configuro como saida
-    set_bit(DDRB, DDB0); // 8 - Configuro como saida
-    set_bit(DDRB, DDB1); // 9 - Configuro como saida
+    set_bit(DDRD, DD7);  // 7 - Seleciono como saida (Valor inicial).
+    set_bit(DDRB, DDB0); // 8 - Seleciono como saida (Valor inicial).
+    set_bit(DDRB, DDB1); // 9 - Seleciono como saida (Valor inicial).
 }
 
 void loop()
 {
     // Lê a ponta onde o botão está mandando energia.
-    char click = digitalRead(2);
+    // char click = digitalRead(2);
+    char click = is_set_bit(PIND, _bit(PIND2));
 
-    if (click == HIGH) // Botão sem precionar
-        turn_on_led(); // Seleciono o led que será acesso e digo que não acendi a cor correta.
-    else               // Botão precionado
+    if (click == HIGH) // Botão sem precionar.
+        turn_on_led(); // Acendo o led selecionado.
+    else               // Botão precionado.
     {
-        if (to_press) // Se for precionado, comece a contar
+        if (to_press) // Se estiver sendo precionado, comece a contar.
         {
             timer = millis();
             to_press = FALSE;
@@ -58,13 +60,15 @@ void loop()
         else if (millis() - timer > limite_timer) // Manter precionado por mais de 1 segundo, apaga todos os leds na hora.
             turn_off_now();                       // Seleciono para apagar todos os leds.
     }
-    delay(5); // Um pequeno delay
+    delay(5); // Um pequeno delay.
 }
 
 void turn_on_led()
 {
-    if (light_up) // Se posso acender
+    // Acende o led selecionado.
+    if (light_up) // Se posso acender.
     {
+        // Verifico o estado e acendo o selecionado.
         if (leds_states == GREEN)
         {
             unset_bit(PORTD, PD7); // Apago o vermelho
@@ -86,21 +90,24 @@ void turn_on_led()
 }
 void select_led()
 {
-    if (!light_up) // Se não posso acender, seleciono o led a acender
+    // Seleciona o led a acender.
+    if (!light_up) // Se não posso acender, seleciono o led a acender.
     {
         leds_states = (leds_states + 1) % 3; // Faz a seleção.
-        light_up = TRUE;                     // Posso acender
+        light_up = TRUE;                     // Posso acender.
     }
 }
 void turn_off_now()
 {
-    leds_states = RESET; // Reseto os estados dos leds
-    turn_off();          // Desligo todos os leds
-    light_up = TRUE;     // Posso acender
-    to_press = TRUE;     // Posso precionar
+    // Apaga todos os leds na hora.
+    leds_states = RESET; // Reseto os estados dos leds.
+    turn_off();          // Desligo todos os leds.
+    light_up = TRUE;     // Posso acender.
+    to_press = TRUE;     // Posso precionar.
 }
 void turn_off()
 {
+    // Apaga todos os leds.
     unset_bit(PORTD, PD7);
     unset_bit(PORTB, PB0);
     unset_bit(PORTB, PB1);
