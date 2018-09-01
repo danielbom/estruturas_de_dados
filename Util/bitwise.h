@@ -30,14 +30,14 @@ bool is_set_bit_32(bit32 bits, bit32 mask);
 bool is_set_bit_64(bit64 bits, bit64 mask);
 
 /* Retorna o resultado do valor dos bits marcando os valores da máscara. */
-bit8 set_bit_8(bit8 &bits, bit8 maks);
-bit32 set_bit_32(bit32 &bits, bit32 maks);
-bit64 set_bit_64(bit64 &bits, bit64 maks);
+bit8 set_bit_8(bit8 bits, bit8 maks);
+bit32 set_bit_32(bit32 bits, bit32 maks);
+bit64 set_bit_64(bit64 bits, bit64 maks);
 
 /* Retorna o resultado do valor dos bits desmarcando os valores da máscara. */
-bit8 unset_bit_8(bit8 &bits, bit8 maks);
-bit32 unset_bit_32(bit32 &bits, bit32 maks);
-bit64 unset_bit_64(bit64 &bits, bit64 maks);
+bit8 unset_bit_8(bit8 bits, bit8 maks);
+bit32 unset_bit_32(bit32 bits, bit32 maks);
+bit64 unset_bit_64(bit64 bits, bit64 maks);
 
 /* Converte uma variável do tipo bit para string. */
 char *to_bin_8(bit8 valor);
@@ -59,15 +59,13 @@ bool is_set_bit_8(bit8 bits, bit8 mask)
 {
     return (bits bAND mask) == mask;
 }
-bit8 set_bit_8(bit8 &bits, bit8 maks)
+bit8 set_bit_8(bit8 bits, bit8 maks)
 {
-    *bits = *bits bOR maks;
-    return *bits;
+    return bits bOR maks;
 }
-bit8 unset_bit_8(bit8 &bits, bit8 maks)
+bit8 unset_bit_8(bit8 bits, bit8 maks)
 {
-    *bits = *bits & ~maks;
-    return *bits;
+    return bits & ~maks;
 }
 char *to_bin_8(bit8 valor)
 {
@@ -87,15 +85,13 @@ bool is_set_bit_32(bit32 bits, bit32 mask)
 {
     return (bits & mask) == mask;
 }
-bit32 set_bit_32(bit32 &bits, bit32 maks)
+bit32 set_bit_32(bit32 bits, bit32 maks)
 {
-    *bits = *bits | maks;
-    return *bits;
+    return bits | maks;
 }
-bit32 unset_bit_32(bit32 &bits, bit32 maks)
+bit32 unset_bit_32(bit32 bits, bit32 maks)
 {
-    *bits = *bits & ~maks;
-    return *bits;
+    return bits & ~maks;
 }
 char *to_bin_32(bit32 valor)
 {
@@ -115,14 +111,13 @@ bool is_set_bit_64(bit64 bits, bit64 mask)
 {
     return (bits & mask) == mask;
 }
-bit64 set_bit_64(bit64 &bits, bit64 maks)
+bit64 set_bit_64(bit64 bits, bit64 maks)
 {
     return bits | maks;
 }
-bit64 unset_bit_64(bit64 &bits, bit64 maks)
+bit64 unset_bit_64(bit64 bits, bit64 maks)
 {
-    *bits = *bits & ~maks;
-    return *bits;
+    return bits & ~maks;
 }
 char *to_bin_64(bit64 valor)
 {
