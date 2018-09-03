@@ -60,9 +60,8 @@ char **split_string(char *original, char *pattern, int *parts)
         for (p = original; token = strstr(p, pattern); p = token + pattern_length, i++)
         {
             char tmp = *token;
-            *token = 0;
             returned[i] = strdup(p);
-            *token = tmp;
+            *token = *pattern;
             if (returned[i] == NULL) // Se der pau
             {
                 while (i--)
@@ -75,6 +74,51 @@ char **split_string(char *original, char *pattern, int *parts)
     }
 
     return returned;
+}
+
+char **split_string2(char *original, char *pattern)
+{
+    size_t pattern_length = strlen(pattern);
+    size_t n = 0;
+    char *p;
+    char *token;
+
+    // encontra quantas vezes o modelo aparece na string
+    for (p = original; token = strstr(p, pattern); p = token + pattern_length)
+        n++;
+
+    char **returned = calloc(n + 2, sizeof(char *)); // MALLOC returned
+
+    if (returned != NULL)
+    {
+        p = original;
+        for (int i = 0; p = spliting_string(p, pattern, pattern_length, returned[i]); i++)
+        {
+            if (returned[i] == NULL)
+            {
+                while (i--)
+                    free(returned[i - 1]);
+                free(returned);
+                return NULL;
+            }
+        }
+    }
+
+    return returned;
+}
+
+char *spliting_string(char *ptr, char *pattern, int length_pattern, char **returned)
+{
+    char *token = strstr(ptr, pattern);
+    if (token)
+    {
+        *token = 0;
+        *returned = strdup(ptr);
+        *token = *pattern;
+        return token + length_pattern;
+    }
+    *returned = strdup(ptr);
+    return NULL;
 }
 
 int count_caracter(char *original, char caracter)

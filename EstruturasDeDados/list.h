@@ -662,6 +662,7 @@ void sort_list(list *self, int (*cmp)(const void *, const void *))
     if (!is_sorted_list(self, cmp))
         _quick_sort_list(self, begin_list(self), last_list(self), cmp);
 }
+
 static void _quick_sort_list(list *self, NoSent *inicio, NoSent *fim, int (*cmp)(const void *, const void *))
 {
     /*
@@ -673,13 +674,21 @@ static void _quick_sort_list(list *self, NoSent *inicio, NoSent *fim, int (*cmp)
      *         quick_sort_(vet, i, p-1)
      *         quick_sort_(vet, p+1, f)
     */
+    static int count = 0;
+    static int deep = 0;
+    printf("%d,%d,%d,%d,%d\n", count, deep, inicio, fim, fim - inicio);
+    deep++;
+    count++;
     if (inicio != fim)
     {
         NoSent *p = _partition_list(inicio, fim, cmp);
+
         if (p != inicio)
             _quick_sort_list(self, inicio, p->ant, cmp); // quick_sort para esquerda
         if (p != fim)
             _quick_sort_list(self, p->prox, fim, cmp); // quick_sort para direita
+
+        deep--;
     }
 }
 static NoSent *_partition_list(NoSent *inicio, NoSent *fim, int (*cmp)(const void *, const void *))
@@ -699,7 +708,8 @@ static NoSent *_partition_list(NoSent *inicio, NoSent *fim, int (*cmp)(const voi
     */
     // As tres proximas linhas tentam melhorar um pouquinho a eficiencia do algoritmo
     // mas, se mostram irrelevantes
-    GREATER_THAN(cmp(fim->ant->dado, fim)) ? swap_NoSent(fim, fim->ant) : 0;
+
+    LESS_THAN(cmp(fim->ant->dado, fim)) ? swap_NoSent(fim, fim->ant) : 0;
     while (LESS_THAN(cmp(inicio->dado, fim->dado)))
         inicio = inicio->prox;
 

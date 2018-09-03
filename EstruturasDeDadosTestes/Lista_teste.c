@@ -3,7 +3,7 @@
 
 bool eh_par_int(void *x)
 {
-    return toInt(a) % 2 == 0 ? true : false;
+    return toInt(x) % 2 == 0 ? true : false;
 }
 void print_list_ln(char *nome, list *L, void (*print_tipo)(const void *))
 {
@@ -169,13 +169,30 @@ void ordenacao_teste()
     delete_list(&L); // FREE L
 }
 
+void ordenacao_debug_teste()
+{
+    int length_array = 4e3;
+    printf("\n\nTestando a funcao sort_list com debug.\n");
+    printf("count,deep,inicio,fim,fim-inicio\n");
+    int *v = random_array(0, 1100, length_array);          // MALLOC v
+    list *L = array_to_list(v, length_array, sizeof(int)); // MALLOC L
+
+    sort_list(L, cmpInt);
+    printf("\nFim da ordenação\n");
+    free(v);         // FREE v
+    delete_list(&L); // FREE L
+}
+
 /* Driver program to test functions of list.h */
 int main()
 {
+    /*
     auxiliares_teste();
     inicial_e_remocao_teste();
     strings_teste();
     ordenacao_teste();
+    */
+    ordenacao_debug_teste();
     system("pause");
     return 0;
 }
