@@ -36,13 +36,13 @@ static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_
 
 /*
  * stdlib.h implementa:
- * 
+ *
  * Ordenação:
  * void qsort(void *array, size_t length, size_t size, int (*cmp)(const void *, const void *));
- * 
+ *
  * Busca binária:
  * void *bsearch(const void *array, const void *element, size_t length, size_t size, int (*cmp)(const void *, const void *));
- * 
+ *
 */
 
 /* INT */
@@ -118,7 +118,7 @@ void *copy_array(void *destiny, void *source, size_t length, size_t s)
  * Por fim um vetor auxiliar é criado para posicionar os valores não nulos no início do array recebido.
  * Esta função retorna o novo tamanho do vetor sem as repetições, mas não modifica o seu tamanho
  * original.
- * 
+ *
  * Complexidade : n * lg n
 */
 /* Remove valores duplicados do array. */
@@ -161,7 +161,7 @@ int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, 
  * com posições aletórias entre o intervalo [n/2, n].
  * Por fim, embaralha os valores no intervalo [n/2, n], com valores aleatórios no
  * intervalo [0, n/2].
- * 
+ *
  * Complexidade : n
 */
 /* Embarralha os valores do array. */
@@ -263,6 +263,48 @@ static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_
     resize_array(ar1, len1, len1 + len2, s);
     copy_array(ar1 + len1 * s, ar2, len2, s);
     return ar1;
+}
+
+void rearrange_positives_negatives_array(void *array, size_t length, size_t s, int (*cmp)(const void*, const void*))
+{
+    void* pivo = calloc(1,s);
+    length *= s;
+    for(int j = 0, i = -s; j < length; j+=s)
+    {
+        if(LESS_THAN(cmp(array + j, pivo))){
+            i+= s;
+            swap(array + j, array + i, s);
+        }
+    }
+}
+
+void merge_sorted_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s, int (*cmp)(const void*, const void*))
+{
+    /* NEED TESTS */
+    int next_gap(int gap, size_t s)
+    {
+        return gap > s ? (((gap / 2) + (gap % 2)) / s) * s : 0;
+    }
+    int i, j;
+    len1 *= s;
+    len2 *= s;
+    int gap = len1 + len2;
+    for(gap = next_gap(gap, s); gap; gap = next_gap(gap + s))
+    {
+        for(i = 0; i + gap < len1; i += s)
+            if(GREATER_THAN(cmp(ar1 + i, ar1 + i + gap)))
+                swap(ar1 + i, ar1 + i + gap, s);
+
+        for(j = gap > len1 ? gap - len1 : 0; i < len1 && j < len2; j += s, i += s)
+            if(GREATER_THAN(cmp(ar1 + i, ar2 + j)))
+                swap(ar1 + i, ar2 + j, s);
+
+        if(j < len2)
+            for(j = 0; j + gap < len2; j++)
+                if(GREATER_THAN(cmp(ar2 + j, ar2 + j + gap)))
+                    swap(ar2 + j, ar2 + j + gap);
+
+    }
 }
 
 /* INT */
