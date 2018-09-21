@@ -36,7 +36,6 @@ void setup()
     // pinMode(2, INPUT_PULLUP); // 2
     // Para simular a situação acima, deve ser executada as 2 funções abaixo.
     set_bit(PORTD, PD2); // 2 - Seleciono como saida (Valor inicial).
-    //set_bit(PIND, PIND2); // 2 - Seleciono como saida (Leitura).
 
     set_bit(DDRD, DD7);  // 7 - Seleciono como saida (Valor inicial).
     set_bit(DDRB, DDB0); // 8 - Seleciono como saida (Valor inicial).
@@ -55,14 +54,15 @@ void loop()
         {
             timer = millis();
             to_press = FALSE;
-            select_led(); // Seleciono o proximo led a acender.
-            turn_on_led();
+            select_led(); // Seleciono o próximo led a acender.
+            turn_on_led(); // Acendo o led.
         }
         else if (millis() - timer > limite_timer) // Manter precionado por mais de 1 segundo, apaga todos os leds na hora.
             turn_off_now();                       // Seleciono para apagar todos os leds.
     }
-    else
-        to_press = TRUE;
+    else // Se não estiver sendo precionado
+        to_press = TRUE; // Posso precionar
+    
     delay(5); // Um pequeno delay.
 }
 
