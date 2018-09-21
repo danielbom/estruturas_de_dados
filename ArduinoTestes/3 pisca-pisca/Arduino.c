@@ -2,7 +2,9 @@
     Este programa pisca três leds em ordem a cada click.
     Se houver um click longo (1 segundo), todos os leds são apagados.
     Ele seleciona o led a acender durante o click.
-    Quando o botão é solto faz as alterações acontecerem. 
+    Quando o botão é solto faz as alterações acontecerem.
+    
+    https://www.tinkercad.com/things/d5AInCJlJOF-daring-lappi-krunk/editel?sharecode=lnultPmessil0gs4rEOxZpg4C1fBkPUTWN0i5zR6_os=
 */
 #define TRUE 1
 #define FALSE 0
@@ -33,8 +35,8 @@ void setup()
 {
     // pinMode(2, INPUT_PULLUP); // 2
     // Para simular a situação acima, deve ser executada as 2 funções abaixo.
-    set_bit(PORTD, PD2);  // 2 - Seleciono como saida (Valor inicial).
-    set_bit(PIND, PIND2); // 2 - Seleciono como saida (Leitura).
+    set_bit(PORTD, PD2); // 2 - Seleciono como saida (Valor inicial).
+    //set_bit(PIND, PIND2); // 2 - Seleciono como saida (Leitura).
 
     set_bit(DDRD, DD7);  // 7 - Seleciono como saida (Valor inicial).
     set_bit(DDRB, DDB0); // 8 - Seleciono como saida (Valor inicial).
@@ -47,19 +49,20 @@ void loop()
     // char click = digitalRead(2);
     char click = is_set_bit(PIND, _bit(PIND2));
 
-    if (click == HIGH) // Botão sem precionar.
-        turn_on_led(); // Acendo o led selecionado.
-    else               // Botão precionado.
+    if (click == LOW) // Botão precionado.
     {
         if (to_press) // Se estiver sendo precionado, comece a contar.
         {
             timer = millis();
             to_press = FALSE;
             select_led(); // Seleciono o proximo led a acender.
+            turn_on_led();
         }
         else if (millis() - timer > limite_timer) // Manter precionado por mais de 1 segundo, apaga todos os leds na hora.
             turn_off_now();                       // Seleciono para apagar todos os leds.
     }
+    else
+        to_press = TRUE;
     delay(5); // Um pequeno delay.
 }
 
@@ -85,7 +88,6 @@ void turn_on_led()
             set_bit(PORTD, PD7);   // Acendo o vermelho
         }
         light_up = FALSE; // Não posso acender, pois já acendi
-        to_press = TRUE;  // Posso precionar
     }
 }
 void select_led()
