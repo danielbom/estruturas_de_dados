@@ -1,6 +1,15 @@
 #include "../Util/bitwise.h"
 #include <time.h>
 
+void t()
+{
+    for(int i = -128; i < 128; i++)
+    {
+        printBin8(i);
+        printf("\n");
+    }
+}
+
 int main()
 {
 
@@ -12,5 +21,6 @@ int main()
 
     free(bit);
 
+    t();
     return 0;
 }
