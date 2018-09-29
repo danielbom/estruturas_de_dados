@@ -57,11 +57,11 @@ bit64 bit(bit8 position)
 // 8 bits
 bool is_set_bit_8(bit8 bits, bit8 mask)
 {
-    return (bits bAND mask) == mask;
+    return (bits & mask) == mask;
 }
 bit8 set_bit_8(bit8 bits, bit8 maks)
 {
-    return bits bOR maks;
+    return bits | maks;
 }
 bit8 unset_bit_8(bit8 bits, bit8 maks)
 {
