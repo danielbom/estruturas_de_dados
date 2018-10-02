@@ -184,12 +184,12 @@ const unsigned char shape_null[] PROGMEM = {0b00000,
                                              0b00000,
                                              0b00000};
 const unsigned char shape_ship[] PROGMEM = {0b11000,
-                                      0b10100,
-                                      0b10010,
-                                      0b01001,
-                                      0b10010,
-                                      0b10100,
-                                      0b11000};
+                                            0b10100,
+                                            0b10010,
+                                            0b01001,
+                                            0b10010,
+                                            0b10100,
+                                            0b11000};
 
 const unsigned char shape_explosion[] PROGMEM = {0b00100,
                                           0b10101,
@@ -213,13 +213,13 @@ const unsigned char shape_big_rock[] PROGMEM = {0b01110,
                                                     0b10101,
                                                     0b11011,
                                                     0b01110};
-const unsigned char shape_little_rock[] PROGMEM = {0b01110,
-                                                   0b11011,
-                                                   0b10101,
+const unsigned char shape_little_rock[] PROGMEM = {0b00000,
+                                                   0b00000,
+                                                   0b01111,
                                                    0b11001,
-                                                   0b10101,
-                                                   0b11011,
-                                                   0b01110};
+                                                   0b10111,
+                                                   0b11100,
+                                                   0b00000};
 
 // ---------------------------------------------------------------- 
 
@@ -324,6 +324,7 @@ void move_bullet()
 typedef struct {
     unsigned char position;
     unsigned char limite;
+    unsigned char shape;
 } Rock;
 
 Rock rock = {0};
@@ -331,7 +332,7 @@ Rock rock = {0};
 void draw_rock()
 {
     cmd_LCD(rock.position, 0);
-    cmd_LCD(iBIG_ROCK, 1);
+    cmd_LCD(rock.shape, 1);
 }
 
 void spawn_rock()
@@ -344,6 +345,7 @@ void spawn_rock()
             time_spawn = 0;
             rock.limite   = random(0, 2) == 0 ? line_0 : line_1;
             rock.position = rock.limite + 0x0F;
+            rock.shape    = random(0, 2) == 0 ? iBIG_ROCK : iLITTLE_ROCK;
             draw_rock();
         }
     }
@@ -426,8 +428,17 @@ void bullet_test_hit()
 // GAME OVER
 void game_over_test()
 {
-    if(ship.position + 0x01 == rock.position)
-        running = FALSE;
+    if(points < 20)
+    {
+        if(ship.position + 0x01 == rock.position)
+            running = FALSE;
+    }
+    else
+    {
+        if(line_0 + 0x01 == rock.position ||
+            line_1 + 0x01 == rock.position)
+            running = FALSE;
+    }
 }
 
 void draw_game_over()
