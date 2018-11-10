@@ -1,33 +1,34 @@
-#include "../EstruturasDeDados/Fila.h"
+#include "../EstruturasDeDados/Queue.h"
 #include "../Util/array.h"
 
-/* Driver program to test functions of Fila.h */
+/* Driver program to test functions of Queue.h */
 int main()
 {
     int n = 10;
     int *v = random_array(1, 900, n); // MALLOC v
-    Fila *F = new_Fila(sizeof(int));  // MALLOC F
+    Queue *F = new_Queue(sizeof(int));  // MALLOC F
 
     for (int i = 0; i < n; i++)
     {
-        push_Fila(F, &v[i]);
+        void* new = malloc(sizeof(int));
+        memcpy(new, &v[i], sizeof(int));
+        push_Queue(F, new);
     }
 
-    print_Fila(F, printInt);
+    print_Queue(F, printInt);
 
-    reverse_Fila(&F);
+    reverse_Queue(&F);
 
     printf("\n");
 
-    print_Fila(F, printInt);
-    pop_Fila(F);
+    print_Queue(F, printInt);
+    pop_Queue(F);
     printf("\n");
 
-    print_Fila(F, printInt);
+    print_Queue(F, printInt);
 
-    free(v);         // FREE v
-    delete_Fila(&F); // FREE F
+    free(v);          // FREE v
+    delete_Queue(&F); // FREE F
 
-    system("pause");
     return 0;
 }

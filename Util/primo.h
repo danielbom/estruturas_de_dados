@@ -1,3 +1,5 @@
+#include <math.h>
+
 #ifndef LOG2
 #define LOG2(x) (log(x) / M_LN2)
 #endif
@@ -9,7 +11,6 @@
 #ifndef PRIMO
 #define PRIMO
 
-#include <math.h>
 #include "array.h"
 
 // LENGTH_PRIME_FACTORS == log2(x)

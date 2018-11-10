@@ -290,7 +290,7 @@ void merge_sorted_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s
     len1 *= s;
     len2 *= s;
     int gap = len1 + len2;
-    for (gap = next_gap(gap, s); gap; gap = next_gap(gap + s))
+    for (gap = next_gap(gap, s); gap; gap = next_gap(gap, gap + s))
     {
         for (i = 0; i + gap < len1; i += s)
             if (GREATER_THAN(cmp(ar1 + i, ar1 + i + gap)))
@@ -303,7 +303,7 @@ void merge_sorted_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s
         if (j < len2)
             for (j = 0; j + gap < len2; j++)
                 if (GREATER_THAN(cmp(ar2 + j, ar2 + j + gap)))
-                    swap(ar2 + j, ar2 + j + gap);
+                    swap(ar2 + j, ar2 + j + gap, s);
     }
 }
 
@@ -376,19 +376,18 @@ float sum_arrayf(float *v, int n)
 /* DOUBLE */
 double *random_arraylf(double begin, double end, int n)
 {
-    // Dependencias: tipos_primarios.h
     if (begin > end)
         swap(&begin, &end, sizeof(double));
 
     double *v = calloc(n, sizeof(double));
-
+    int size = sizeof(double);
     const ULLI MAX = 1e16;
 
     ULLI range = MAX - (begin / end) * MAX;
 
     srand((unsigned)time(NULL));
     for (int i = 0; i < n; i++)
-        v[i] = (((ULLI)(rand() * 1e12 + rand() * 1e8 + rand() * 1e4 + rand()) % range) / (double)MAX) * end + begin;
+        v[i] = (((ULLI)(rand() * 1e10 + rand() * 1e8 + rand() * 1e4 + rand()) % range) / (double)MAX) * end + begin;
 
     return v;
 }

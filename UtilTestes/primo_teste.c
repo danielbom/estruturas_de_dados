@@ -33,9 +33,7 @@ void teste_primos()
 
         int c = 0;
         for (int i = 2; i < lim; i++)
-        {
             c += p(i);
-        }
 
         clock_t fim = clock();
         double tempo_gasto = (double)(fim - comeco) / CLOCKS_PER_SEC;
@@ -200,7 +198,7 @@ void teste_gerador_primos()
         clock_t fim = clock();
         double tempo_gasto = (double)(fim - comeco) / CLOCKS_PER_SEC;
 
-        printf("tempo (%g) contador (%ull)\n", tempo_gasto, c);
+        printf("tempo (%g) contador (%llu)\n", tempo_gasto, c);
     }
     int lim = 1e6;
     printf("Gerador 1, incremento 2 ");

@@ -20,7 +20,6 @@ void teste_float()
 
     free(ar); // FREE ar
 }
-
 void teste_int()
 {
     int (*cmp)(const void *, const void *) = cmpInt;
@@ -55,7 +54,6 @@ void teste_int()
 
     free(ar); // FREE ar
 }
-
 void teste_resize()
 {
     int *ar = random_array(0, 50, 10);
@@ -64,7 +62,6 @@ void teste_resize()
     print_array(resize_array(ar, 10, 20, sizeof(int)), 20, sizeof(int), printInt);
     printf("\n");
 }
-
 void teste_random_float()
 {
     int n = 10;
@@ -76,13 +73,17 @@ void teste_random_float()
 void teste_random_double()
 {
     int n = 10;
-    double *r = random_arraylf(0, 1, n);
+    double *r = random_arraylf(-1, 1, n);
     printf("\n");
-    print_array(r, n, sizeof(double), printLongDouble);
+    print_array(r, n, sizeof(double), printDouble);
     printf("\n");
 }
 int main()
 {
+    teste_float();
+    teste_int();
+    teste_resize();
+    teste_random_float();
     teste_random_double();
     return 0;
 }

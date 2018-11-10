@@ -73,10 +73,6 @@ double toDouble(const void *v)
 {
     return *(double *)v;
 }
-long double toLongDouble(const void *v)
-{
-    return *(long double *)v;
-}
 char toChar(const void *v)
 {
     return *(char *)v;
@@ -133,10 +129,6 @@ void printExtendDouble(const void *v)
 {
     printf("%.16lf", toDouble(v));
 }
-void printLongDouble(const void *v)
-{
-    printf("%Lf", toLongDouble(v));
-}
 void printChar(const void *v)
 {
     printf("%c", toChar(v));
@@ -147,7 +139,7 @@ void printString(const void *v)
 }
 void printULLI(const void *v)
 {
-    printf("%" PRIu64, toULLI(v));
+    printf("%llu", toULLI(v));
 }
 
 /* COMPARACAO DE TIPOS PRIMARIOS */

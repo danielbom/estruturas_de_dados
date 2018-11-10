@@ -80,19 +80,19 @@ void teste_constantes_macros()
 
 void sizeof_tipos()
 {
-    printf("sizeof(void*): %d\n", sizeof(void *));
-    printf("sizeof(char): %d\n", sizeof(char));
-    printf("sizeof(int): %d\n", sizeof(int));
-    printf("sizeof(bool): %d\n", sizeof(bool));
-    printf("sizeof(long): %d\n", sizeof(long));
-    printf("sizeof(float): %d\n", sizeof(float));
-    printf("sizeof(double): %d\n", sizeof(double));
-    printf("sizeof(unsigned char): %d\n", sizeof(unsigned char));
-    printf("sizeof(unsigned int): %d\n", sizeof(unsigned int));
-    printf("sizeof(unsigned long long): %d\n", sizeof(unsigned long long));
-    printf("sizeof(long long): %d\n", sizeof(long long));
-    printf("sizeof(long long int): %d\n", sizeof(long long int));
-    printf("sizeof(long double): %d\n", sizeof(long double));
+    printf("sizeof(void*): %d\n", (int)sizeof(void *));
+    printf("sizeof(char): %d\n", (int)sizeof(char));
+    printf("sizeof(int): %d\n", (int)sizeof(int));
+    printf("sizeof(bool): %d\n", (int)sizeof(bool));
+    printf("sizeof(long): %d\n", (int)sizeof(long));
+    printf("sizeof(float): %d\n", (int)sizeof(float));
+    printf("sizeof(double): %d\n", (int)sizeof(double));
+    printf("sizeof(unsigned char): %d\n", (int)sizeof(unsigned char));
+    printf("sizeof(unsigned int): %d\n", (int)sizeof(unsigned int));
+    printf("sizeof(unsigned long long): %d\n", (int)sizeof(unsigned long long));
+    printf("sizeof(long long): %d\n", (int)sizeof(long long));
+    printf("sizeof(long long int): %d\n", (int)sizeof(long long int));
+    printf("sizeof(long double): %d\n", (int)sizeof(long double));
 }
 
 void teste_math_h()
@@ -217,7 +217,7 @@ void teste_operacoes_com_bits()
     printf("%x & %x = %x\n", a, b, c);
     print_bin_("&", 3, a, b, c);
 }
-
+/*
 void teste_complexo()
 {
     printf("Teste complexos\n");
@@ -230,7 +230,7 @@ void teste_complexo()
     printf("Real: %f\n", creal(z));
     printf("Imaginaria: %f\n", cimag(z));
 }
-
+*/
 int main()
 {
     //setlocale(LC_ALL, "Portuguese");

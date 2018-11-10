@@ -1,4 +1,4 @@
-#include "../EstruturasDeDados/stack.h"
+#include "../EstruturasDeDados/Stack.h"
 #include "../Util/array.h"
 
 /* Driver program to test functions of stack.h */
@@ -10,7 +10,9 @@ int main()
 
     for (int i = 0; i < n; i++)
     {
-        push_stack(P, &v[i]);
+        void* new = malloc(sizeof(int));
+        memcpy(new, &v[i], sizeof(int));
+        push_stack(P, new);
     }
 
     printf("\n");
