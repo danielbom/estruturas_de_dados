@@ -6,6 +6,7 @@ static double ARRAY__ZERO = 0;
 
 void print_if_array(void *array, size_t length, size_t s, void (*print)(const void *), int (*condicao)(const void *)); // OK
 void print_array(void *array, size_t length, size_t s, void (*print)(const void *));                                   // OK
+void println_array(void *array, size_t length, size_t s, void (*print)(const void *));                                 // OK
 void printz_array(void *array, size_t length, size_t s, void (*print)(const void *));                                  // OK
 
 void *arrayz(size_t length, size_t s); // OK
@@ -25,8 +26,8 @@ int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(c
 int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
 int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
 
-void *resize_array(void *array, size_t length, int new_length, size_t s);         // OK
-static void *_resize_array(void *array, size_t length, int new_length, size_t s); // OK
+void *resize_array(void **array, size_t length, int new_length, size_t s); // OK
+void *shift_array(void **array, size_t length, int n_shift, size_t s);
 
 void *remove_if(void *array, size_t length, size_t s, int (*condicao)(const void *));               // OK
 static void *_remove_if_array(void *array, size_t length, size_t s, int (*condicao)(const void *)); // OK
@@ -61,6 +62,11 @@ double mult_arraylf(double *v, int n);
 double sum_arraylf(double *v, int n);
 /* IMPLEMENTAÇÕES */
 
+/*
+ * OBS: print, print_if, println possuem o mesmo código.
+ * Caso for alterar, altere todas.
+*/
+
 /* Faz a impressão do array enquanto a condição é satisfeita. */
 void print_if_array(void *array, size_t length, size_t s, void (*print)(const void *), int (*condicao)(const void *))
 {
@@ -76,12 +82,27 @@ void print_if_array(void *array, size_t length, size_t s, void (*print)(const vo
 /* Faz a impressão de todo o array. */
 void print_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
-    // Dependencias: print_if_array
-    int condicao(const void *element)
+    printf("( ");
+    int n = length * s;
+    for (int i = 0; i < n; i += s)
     {
-        return 1;
+        print(array + i);
+        printf(", ");
     }
-    print_if_array(array, length, s, print, condicao);
+    printf(")");
+}
+/* Faz a impressão de todo o array e pula uma linha. */
+void println_array(void *array, size_t length, size_t s, void (*print)(const void *))
+{
+    printf("( ");
+    int n = length * s;
+    for (int i = 0; i < n; i += s)
+    {
+        print(array + i);
+        printf(", ");
+    }
+    printf(")");
+    printf("\n");
 }
 /* Faz a impressão do array até o primeiro valor nulo. */
 void printz_array(void *array, size_t length, size_t s, void (*print)(const void *))
@@ -109,7 +130,10 @@ void *dup_array(void *array, size_t length, size_t s)
 /* Faz a copia do array fonte(source) para o array destino(destiny) e retorna o ponteiro do destino. */
 void *copy_array(void *destiny, void *source, size_t length, size_t s)
 {
-    return memcpy(destiny, source, s * length);
+    length = length * s;
+    for(int i = 0; i < length; i+=s)
+        memcpy(destiny + i, source + i, s);
+    return destiny;
 }
 
 /*
@@ -235,13 +259,34 @@ int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, con
 }
 
 /* Realoca o array para um novo tamanho. */
-#define resize_array(array, length, new_length, s) ({array = _resize_array(array, length, new_length, s); array; })
-static void *_resize_array(void *array, size_t length, int new_length, size_t s)
+void *resize_array(void **array, size_t length, int new_length, size_t s)
 {
-    // Dependencias: copy_array
-    void *new = copy_array(calloc(new_length, s), array, (length < new_length ? length : new_length), s);
-    free(array);
-    return new;
+    void *copy = calloc(new_length, s);
+    if(length < new_length)
+        copy_array(copy, *array, length, s);
+    else
+        copy_array(copy, *array, new_length, s);
+    free(*array);
+    *array = copy;
+    return copy;
+}
+/* Desloca o conteudo do array [n_shift * s] bytes para frente. */
+void *shift_array(void **array, size_t length, int n_shift, size_t s)
+{
+    if(n_shift + length < 0)
+        return *array;
+    
+    void *copy = calloc(length + n_shift, s);
+
+    if(n_shift > 0)
+        copy_array(copy + n_shift * s, *array, length, s);
+    else
+        copy_array(copy, *array - n_shift * s, length - n_shift - 1, s);
+    
+    free(*array);
+    *array = copy;
+    
+    return *array;
 }
 
 #define remove_if_array(array, length, s, condicao) ({array = _remove_if(array, length, s, condicao); array; })

@@ -1,6 +1,8 @@
 /*
  * Listas são estruturas de dados que não é boa com buscas.
  * Se precisar fazer muitas buscas, utilize outra estrutura de dados.
+ * 
+ * Essa lista não destroi os dados da forma devida.
 */
 #ifndef LIST
 #define LIST

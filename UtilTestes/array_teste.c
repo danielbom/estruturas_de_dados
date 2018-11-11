@@ -59,9 +59,44 @@ void teste_resize()
     int *ar = random_array(0, 50, 10);
     print_array(ar, 10, sizeof(int), printInt);
     printf("\n");
-    print_array(resize_array(ar, 10, 20, sizeof(int)), 20, sizeof(int), printInt);
+    print_array(resize_array((void**)(&ar), 10, 20, sizeof(int)), 20, sizeof(int), printInt);
     printf("\n");
+    print_array(resize_array((void**)(&ar), 20, 10, sizeof(int)), 10, sizeof(int), printInt);
+    printf("\n");
+    free(ar);
+
 }
+void teste_shift()
+{
+    int s = sizeof(int);
+    int n = 10;
+    int shift = 2;
+    int *ar = random_array(0, 50, n);   // MALLOC ar
+    printf("\nInitial.\n");
+    print_array(ar, n, s, printInt);
+
+    printf("\nFirst shifting.\n");
+    shift_array((void**)(&ar), n, shift, s);
+    print_array(ar, n + shift, s, printInt);
+    n = n + shift;
+
+    printf("\nSecond shifting.\n");
+    shift_array((void**)(&ar), n, shift, s);
+    print_array(ar, n + shift, s, printInt);
+    n = n + shift;
+    
+    printf("\nThird shifting.\n");
+    for(int i = 0; i < 5; i++)
+    {
+        shift = -1;
+        shift_array((void**)(&ar), n, shift, s);
+        print_array(ar, n + shift, s, printInt);
+        n = n + shift;
+        printf("\n");
+    }
+    free(ar);
+}
+
 void teste_random_float()
 {
     int n = 10;
@@ -78,12 +113,16 @@ void teste_random_double()
     print_array(r, n, sizeof(double), printDouble);
     printf("\n");
 }
+
 int main()
 {
+    teste_shift();
+    /*
     teste_float();
     teste_int();
     teste_resize();
     teste_random_float();
     teste_random_double();
+    */
     return 0;
 }

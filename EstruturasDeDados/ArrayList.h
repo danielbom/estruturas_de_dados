@@ -1,5 +1,3 @@
-// Preciso pesar em como iterar sobre o array...
-
 #ifndef ARRAY_LIST
 #define ARRAY_LIST
 
@@ -10,21 +8,21 @@ typedef struct arraylist
 {
     void **array; // vetor de ponteiros
     int qtde;
-    int tam;
+    int length;
     size_t size;
 } ArrayList;
 
 /* CONSTRUTOR E DESTRUTOR */
-ArrayList *new_ArrayList(size_t size, int tam);                        // TODO
-ArrayList *new_random_ArrayList(int begin, int end, int array_length); // TODO
-ArrayList *new_zeros_ArrayList(int array_length);                      // TODO
-void realloc_ArrayList(ArrayList *ar, int tam);                        // TODO
-void delete_ArrayList(ArrayList **ar);                                 // TODO
+ArrayList *new_ArrayList(size_t size, int length);                        // TODO
+ArrayList *new_random_ArrayList(int begin, int end, int array_length);    // TODO
+ArrayList *new_zeros_ArrayList(int array_length);                         // TODO
+void realloc_ArrayList(ArrayList *ar, int length);                        // TODO
+void delete_ArrayList(ArrayList **ar);                                    // TODO
 
 /* FUNCOES DE BUSCA */
-void *index_ArrayList(ArrayList *ar, int pos);                                              // TODO
+void *index_ArrayList(ArrayList *ar, int pos);                                             // TODO
 int conteins_ArrayList(ArrayList *ar, void *elem, int (*cmp)(const void *, const void *)); // TODO
-int find_ArrayList(ArrayList *ar, void *elem, int (*cmp)(const void *, const void *));      // TODO
+int find_ArrayList(ArrayList *ar, void *elem, int (*cmp)(const void *, const void *));     // TODO
 
 void *max_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // TODO
 void *min_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // TODO
@@ -40,10 +38,10 @@ int insert_ArrayList(ArrayList *ar, void *elem, int pos); // TODO
 int update_ArrayList(const ArrayList *dest, const ArrayList *font); // TODO
 
 /* FUNCOES DE REMOCAO */
-int pop_back_ArrayList(ArrayList *ar);        // TODO
-int pop_front_ArrayList(ArrayList *ar);       // TODO
-void *pop_back_dado_ArrayList(ArrayList *ar);  // TODO
-void *pop_front_dado_ArrayList(ArrayList *ar); // TODO
+int pop_back_ArrayList(ArrayList *ar);         // TODO ---
+int pop_front_ArrayList(ArrayList *ar);        // TODO
+void *pop_back_data_ArrayList(ArrayList *ar);  // TODO
+void *pop_front_data_ArrayList(ArrayList *ar); // TODO
 
 int remove_ArrayList(ArrayList *ar, void *elem, int (*cmp)(const void *, const void *)); // TODO
 int pop_ArrayList(ArrayList *ar, int pos);                                               // TODO
@@ -52,7 +50,7 @@ void remove_if_ArrayList(ArrayList *ar, int (*condicao)(void *));               
 void clear_ArrayList(ArrayList *ar); // TODO
 
 /* FUNCOES AUXILIARES */
-void print_ArrayList(ArrayList *ar, void (*print)(const void *));                                    // OK 03/08/2018
+void print_ArrayList(ArrayList *ar, void (*print)(const void *));                                   // OK 03/08/2018
 void print_if_ArrayList(ArrayList *ar, void (*print)(const void *), int (*condicao)(const void *)); // OK 03/08/2018
 
 int is_sorted_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *));   // TODO
@@ -78,20 +76,21 @@ void sort_ArrayList(ArrayList *ar, int (*cmp)(const void *, const void *)); // 2
 /* IMPLEMENTACOES ArrayList */
 
 /* CONSTRUTOR E DESTRUTOR */
-ArrayList *new_ArrayList(size_t size, int tam)
+ArrayList *new_ArrayList(size_t size, int length)
 {
     ArrayList *ar = (ArrayList *)malloc(sizeof(ArrayList));
 
-    ar->array = (void **)calloc(tam, size);
+    ar->array = (void **)calloc(length, size);
 
     ar->qtde = 0;
-    ar->tam = tam;
+    ar->length = length;
     ar->size = size;
 
     return ar;
 }
-void realloc_ArrayList(ArrayList *ar, int tam) {}
+void realloc_ArrayList(ArrayList *ar, int length) {}
 void delete_ArrayList(ArrayList **ar) {}
+
 
 /* FUNCOES AUXILIARES */
 void print_ArrayList(ArrayList *ar, void (*print)(const void *))
@@ -128,7 +127,7 @@ void swap_ArrayList(ArrayList *ar1, ArrayList *ar2)
 {
     pswap(ar1->array, ar2->array);
     swap(&ar1->qtde, &ar2->qtde, sizeof(int));
-    swap(&ar1->tam, &ar2->tam, sizeof(int));
+    swap(&ar1->length, &ar2->length, sizeof(int));
     swap(&ar1->size, &ar2->size, sizeof(size_t));
 }
 
