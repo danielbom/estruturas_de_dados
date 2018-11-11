@@ -1,22 +1,31 @@
+#ifndef MORE_STRINGS
+#define MORE_STRINGS
 #include <string.h>
 
-char *replace_string(char const *const original, char const *const pattern, char const *const replacement)
+char *replace_string(char* original, char*  pattern, char*  replacement);
+char **split_string(char *original, char *pattern, int *parts);
+char **split_string2(char *original, char *pattern);
+char *spliting_string(char *ptr, char *pattern, int length_pattern, char **returned);
+int count_caracter(char *original, char caracter);
+int count_substrings(char *original, char *pattern);
+
+char *replace_string(char*  original, char*  pattern, char*  replacement)
 {
-    size_t const replacement_length = strlen(replacement);
-    size_t const original_length = strlen(original);
-    size_t const pattern_length = strlen(pattern);
+    size_t replacement_length = strlen(replacement);
+    size_t original_length = strlen(original);
+    size_t pattern_length = strlen(pattern);
 
     size_t pattern_count = 0;
-    const char *p;
-    const char *token;
+    char *p;
+    char *token;
 
     // find how many times the pattern occurs in the original string
     for (p = original; token = strstr(p, pattern); p = token + pattern_length)
         pattern_count++;
 
     // allocate memory for the new string
-    size_t const returned_length = original_length + pattern_count * (replacement_length - pattern_length);
-    char *const returned = calloc((returned_length + 1), sizeof(char));
+    size_t returned_length = original_length + pattern_count * (replacement_length - pattern_length);
+    char*  returned = calloc((returned_length + 1), sizeof(char));
 
     if (returned != NULL)
     {
@@ -25,7 +34,7 @@ char *replace_string(char const *const original, char const *const pattern, char
         char *p2 = returned;
         for (p = original; token = strstr(p, pattern); p = token + pattern_length)
         {
-            size_t const skip_length = token - p;
+            size_t skip_length = token - p;
             // copy the section until the occurence of the pattern
             strncpy(p2, p, skip_length);
             p2 += skip_length;
@@ -138,3 +147,5 @@ int count_substrings(char *original, char *pattern)
         count++;
     return count;
 }
+
+#endif
