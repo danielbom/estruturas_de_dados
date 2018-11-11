@@ -3,38 +3,206 @@
 #include "tipos_primarios.h"
 
 static double ARRAY__ZERO = 0;
+// -------------------------------------------- //
+//              Funcoes de impressao            //
+// -------------------------------------------- //
+// Faz a impressão do array enquanto a condição é satisfeita.
+void print_if_array(
+    void *array,
+    size_t length,
+    size_t s,
+    void (*print)(const void *),
+    int (*condicao)(const void *)
+    ); // OK
+// Faz a impressão do array inteiro.
+void print_array(
+    void *array,
+    size_t length,
+    size_t s,
+    void (*print)(const void *)
+    ); // OK
+// Faz a impressão do array inteiro e pula uma linha.
+void println_array(
+    void *array,
+    size_t length,
+    size_t s,
+    void (*print)(const void *)
+    ); // OK
+// Faz a impressão do array até o primeiro valor nulo.
+void printz_array(
+    void *array,
+    size_t length,
+    size_t s,
+    void (*print)(const void *)
+    ); // OK
+// -------------------------------------------- //
+//              Funcoes de criacao              //
+// -------------------------------------------- //
+// Cria um array de tamanho length do tamanho do tipo s, inicialmente inicializado com zeros.
+void *arrayz(
+    size_t length,
+    size_t s
+    ); // OK
 
-void print_if_array(void *array, size_t length, size_t s, void (*print)(const void *), int (*condicao)(const void *)); // OK
-void print_array(void *array, size_t length, size_t s, void (*print)(const void *));                                   // OK
-void println_array(void *array, size_t length, size_t s, void (*print)(const void *));                                 // OK
-void printz_array(void *array, size_t length, size_t s, void (*print)(const void *));                                  // OK
+// Duplica o array enviado e retorna um ponteiro do resultado.
+void *dup_array(
+    void *array, 
+    size_t length, 
+    size_t s
+    ); // OK
 
-void *arrayz(size_t length, size_t s); // OK
+// Faz uma copia do array [source] para o array [destiny] e retorna o ponteiro de [destiny].
+void *copy_array(
+    void *destiny, 
+    void *source, 
+    size_t length, 
+    size_t s
+    );
+// Faz uma copia reversa do array [source] para o array [destiny] e retorna o ponteiro de [destiny].
+void *rcopy_array(
+    void *destiny, 
+    void *source, 
+    size_t length, 
+    size_t s
+    );
+// -------------------------------------------- //
+//             Funcoes de manipulacao           //
+// -------------------------------------------- //
+/*
+ * Este algoritmo busca deixar o array apenas com
+ * valores únicos, isto é, sem repetição.
+ * Inicialmente ordena-se o array. Em seguida, com
+ * um array auxiliar, iterando sobre o array inicial,
+ * ignorando todos os valores repetidos, copia-se 
+ * todos os valores unicos.
+ * Por fim, o vetor inicial e deletado e substituido
+ * pelo vetor auxiliar.
+ *
+ * Complexidade : n * lg n
+*/
+// Remove valores duplicados do array.
+int unique_array(
+    void *array, 
+    size_t length, 
+    size_t s, 
+    int (*cmp)(const void *, const void *)
+    ); // OK
 
-void *dup_array(void *array, size_t length, size_t s); // OK
+/*
+ * Este algoritmo tem o objetivo de embaralhar os
+ * valores de um vetor.
+ * Para isto, primeiro se embaralha os valores das
+ * posições do intervalo [0, n/2], com posições
+ * aletórias entre o intervalo [n/2, n].
+ * Por fim, embaralha os valores no intervalo
+ * [n/2, n], com valores aleatórios no intervalo
+ * [0, n/2].
+ *
+ * Complexidade : n
+*/
+// Embarralha os valores do array.
+void *shuffle_array(
+    void *array, 
+    size_t length, 
+    size_t s
+    ); // OK
 
-int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
+// Inverte a ordem do array e retorna o array.
+void *reverse_array(
+    void *array, 
+    size_t length, 
+    size_t s
+    ); // OK
+// Realoca o array para um novo tamanho.
+void *resize_array(
+    void **array,
+    size_t length,
+    int new_length,
+    size_t s
+    ); // OK
+// Desloca o conteudo do array [n_shift * s] bytes para frente.
+void *shift_array(
+    void **array,
+    size_t length,
+    int n_shift,
+    size_t s
+    ); // OK
+// Remove os elementos enquanto a condicao for satisfeita.
+int remove_if_array(
+    void **array,
+    size_t length, 
+    size_t s, 
+    int (*condicao)(const void *)
+    ); // TEST
+// Concatena o segundo array ao primeiro.
+int update_array(
+    void *ar1,
+    size_t len1,
+    void *ar2,
+    size_t len2,
+    size_t s
+    ); // OK
+// -------------------------------------------- //
+//              Funcoes de busca                //
+// -------------------------------------------- //
+// Retorna a posição da primeira ocorrencia do elemento no array.
+int find_array(
+    void *array,
+    void *element,
+    size_t length,
+    size_t s,
+    int (*cmp)(const void *, const void *)
+    ); // OK
 
-void *shuffle_array(void *array, size_t length, size_t s); // OK
+// Retorna a posição da ultima ocorrencia do elemento no array.
+int rfind_array(
+    void *array, 
+    void *element, 
+    size_t length, 
+    size_t s, 
+    int (*cmp)(const void *, const void *)
+    ); // OK
+// Retorna a posição da primeira ocorrencia do maior valor do array.
+int max_array(
+    void *array,
+    size_t length,
+    size_t s,
+    int (*cmp)(const void *, const void *)
+    ); // OK
+// Retorna a posição da primeira ocorrencia do menor valor do array.
+int min_array(
+    void *array,
+    size_t length,
+    size_t s,
+    int (*cmp)(const void *, const void *)
+    ); // OK
 
-void *reverse_array(void *array, size_t length, size_t s); // OK
-
-int equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
-
-int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
-
-int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
-int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *)); // OK
-
-void *resize_array(void **array, size_t length, int new_length, size_t s); // OK
-void *shift_array(void **array, size_t length, int n_shift, size_t s);
-
-void *remove_if(void *array, size_t length, size_t s, int (*condicao)(const void *));               // OK
-static void *_remove_if_array(void *array, size_t length, size_t s, int (*condicao)(const void *)); // OK
-
-void *update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s);         // OK
-static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s); // OK
-
+// Remove os elementos do array enquanto a condicao for satisfeita.
+// -------------------------------------------- //
+//          Funcoes de verificacao              //
+// -------------------------------------------- //
+// Verifica se o array ar1 é igual ao array ar2.
+int equals_array(
+    void *ar1,
+    void *ar2,
+    size_t length,
+    size_t s,
+    int (*cmp)(const void *, const void *)
+    ); // OK
+// Verifica se o array esta ordenado.
+int is_sorted_array(
+    void *array, 
+    size_t length, 
+    size_t size, 
+    int (*cmp)(const void*,const void*)
+    ); // OK
+// Verifica se o array esta ordenado de forma inversa.
+int is_reversed_array(
+    void *array,
+    size_t length,
+    size_t size,
+    int (*cmp)(const void*,const void*)
+    ); // OK
 /*
  * stdlib.h implementa:
  *
@@ -45,7 +213,9 @@ static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_
  * void *bsearch(const void *array, const void *element, size_t length, size_t size, int (*cmp)(const void *, const void *));
  *
 */
-
+// -------------------------------------------- //
+//       Funcoes para tipos especificos         //
+// -------------------------------------------- //
 /* INT */
 int *random_array(int begin, int end, int n);
 int mult_array(int *v, int n);
@@ -60,14 +230,20 @@ float sum_arrayf(float *v, int n);
 double *random_arraylf(double begin, double end, int n);
 double mult_arraylf(double *v, int n);
 double sum_arraylf(double *v, int n);
-/* IMPLEMENTAÇÕES */
+
+
+
+/* Implementacoes array */
+
+
 
 /*
  * OBS: print, print_if, println possuem o mesmo código.
  * Caso for alterar, altere todas.
 */
-
-/* Faz a impressão do array enquanto a condição é satisfeita. */
+// -------------------------------------------- //
+//              Funcoes de impressao            //
+// -------------------------------------------- //
 void print_if_array(void *array, size_t length, size_t s, void (*print)(const void *), int (*condicao)(const void *))
 {
     printf("( ");
@@ -79,7 +255,6 @@ void print_if_array(void *array, size_t length, size_t s, void (*print)(const vo
     }
     printf(")");
 }
-/* Faz a impressão de todo o array. */
 void print_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
     printf("( ");
@@ -91,7 +266,6 @@ void print_array(void *array, size_t length, size_t s, void (*print)(const void 
     }
     printf(")");
 }
-/* Faz a impressão de todo o array e pula uma linha. */
 void println_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
     printf("( ");
@@ -104,59 +278,52 @@ void println_array(void *array, size_t length, size_t s, void (*print)(const voi
     printf(")");
     printf("\n");
 }
-/* Faz a impressão do array até o primeiro valor nulo. */
 void printz_array(void *array, size_t length, size_t s, void (*print)(const void *))
 {
-    // Dependencias: print_if_array
     int condicao(const void *element)
     {
         return toDouble(element) != ARRAY__ZERO;
     }
     print_if_array(array, length, s, print, condicao);
 }
-
-/* Cria um array de tamanho length do tamanho do tipo s, inicialmente inicializado com zeros. */
+// -------------------------------------------- //
+//              Funcoes de criacao              //
+// -------------------------------------------- //
 void *arrayz(size_t length, size_t s)
 {
     return calloc(length, s);
 }
-
-/* Duplica o array enviado e retorna um ponteiro do resultado. */
 void *dup_array(void *array, size_t length, size_t s)
 {
     return memcpy(calloc(length, s), array, length * s);
 }
-
-/* Faz a copia do array fonte(source) para o array destino(destiny) e retorna o ponteiro do destino. */
 void *copy_array(void *destiny, void *source, size_t length, size_t s)
 {
-    length = length * s;
+    length = length * s ;
     for(int i = 0; i < length; i+=s)
         memcpy(destiny + i, source + i, s);
     return destiny;
 }
-
-/*
- * Este algoritmo busca deixar o array apenas com valores únicos, isto é, sem repetição.
- * Para isto, cada elemento repetido é substituído pelo valor 0.
- * Por fim um vetor auxiliar é criado para posicionar os valores não nulos no início do array recebido.
- * Esta função retorna o novo tamanho do vetor sem as repetições, mas não modifica o seu tamanho
- * original.
- *
- * Complexidade : n * lg n
-*/
-/* Remove valores duplicados do array. */
+void *rcopy_array(void *destiny, void *source, size_t length, size_t s)
+{
+    length = length * s - s;
+    for(int i = length; i >= 0; i-=s)
+        memcpy(destiny + i, source + i, s);
+    return destiny;
+}
+// -------------------------------------------- //
+//             Funcoes de manipulacao           //
+// -------------------------------------------- //
 int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
 {
-    // Dependencias: tipos_primarios.h
     qsort(array, length, s, cmp);
     int n, i, j;
     for (i = n = 0; i < (length - 1) * s; i += s, n++)
     {
         if (EQUAL_TO(cmp(array + i, array + i + s)))
         {
-            void *elem = array + i;
-            for (i += s; i < length * s && EQUAL_TO(cmp(elem, array + i)); i += s)
+            void *value = array + i;
+            for (i += s; i < length * s && EQUAL_TO(cmp(value, array + i)); i += s)
                 memcpy(array + i, &ARRAY__ZERO, s);
             i -= s;
         }
@@ -178,20 +345,8 @@ int unique_array(void *array, size_t length, size_t s, int (*cmp)(const void *, 
     }
     return n;
 }
-
-/*
- * Este algoritmo tem o objetivo de embaralhar os valores de um vetor.
- * Para isto, primeiro se embaralha os valores das posições do intervalo [0, n/2],
- * com posições aletórias entre o intervalo [n/2, n].
- * Por fim, embaralha os valores no intervalo [n/2, n], com valores aleatórios no
- * intervalo [0, n/2].
- *
- * Complexidade : n
-*/
-/* Embarralha os valores do array. */
 void *shuffle_array(void *array, size_t length, size_t s)
 {
-    // Dependencias: tipos_primarios.h
     srand((unsigned)time(NULL));
     int range = length / 2;
     int begin = length / 2;
@@ -203,62 +358,12 @@ void *shuffle_array(void *array, size_t length, size_t s)
 
     return array;
 }
-
-/* Inverte a ordem do array e retorna o array. */
 void *reverse_array(void *array, size_t length, size_t s)
 {
-    // Dependencias: tipos_primarios.h
     for (int i = 0, j = (length - 1) * s; i < j; i += s, j -= s)
         swap(array + i, array + j, s);
     return array;
 }
-
-/* Verifica se o array ar1 é igual ao array ar2. */
-int equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(const void *, const void *))
-{
-    // Dependencias: tipos_primarios.h
-    int n = s * length;
-    for (int i = 0; i < n; i += s)
-        if (NOT_EQUAL_TO(cmp(ar1 + i, ar2 + i)))
-        {
-            // printf("\n\n%d %d\n\n", toInt(ar1 + i), toInt(ar2 + i)); // DEBUG
-            return 0;
-        }
-    return 1;
-}
-
-/* Retorna a posição da primeira ocorrencia do elemento no array. */
-int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(const void *, const void *))
-{
-    // Dependencias: tipos_primarios.h
-    for (int i = 0; i < length; i += s)
-        if (EQUAL_TO(cmp(array + i, element)))
-            return i / s;
-    return -1;
-}
-
-/* Retorna a posição do maior valor do array. */
-int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
-{
-    // Dependencias: tipos_primarios.h
-    int max = 0;
-    for (int i = 1; i < length; i += s)
-        if (GREATER_THAN(cmp(array + i, array + max)))
-            max = i;
-    return max / s;
-}
-/* Retorna a posição do menor valor do array. */
-int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
-{
-    // Dependencias: tipos_primarios.h
-    int min = 0;
-    for (int i = 1; i < length; i += s)
-        if (LESS_THAN(cmp(array + i, array + min)))
-            min = i;
-    return min / s;
-}
-
-/* Realoca o array para um novo tamanho. */
 void *resize_array(void **array, size_t length, int new_length, size_t s)
 {
     void *copy = calloc(new_length, s);
@@ -270,7 +375,6 @@ void *resize_array(void **array, size_t length, int new_length, size_t s)
     *array = copy;
     return copy;
 }
-/* Desloca o conteudo do array [n_shift * s] bytes para frente. */
 void *shift_array(void **array, size_t length, int n_shift, size_t s)
 {
     if(n_shift + length < 0)
@@ -288,74 +392,110 @@ void *shift_array(void **array, size_t length, int n_shift, size_t s)
     
     return *array;
 }
-
-#define remove_if_array(array, length, s, condicao) ({array = _remove_if(array, length, s, condicao); array; })
-static void *_remove_if_array(void *array, size_t length, size_t s, int (*condicao)(const void *))
+int remove_if_array(void **array, size_t length, size_t s, int (*condicao)(const void *))
 {
-    void *new = calloc(length, s);
+    int new_length = 0;
     int n = length * s;
-    for (int i = 0, j = 0; i < n; i += s)
-        if (!condicao(array + i))
-            memcpy(new + j, array + i, s);
-    free(array);
-    return new;
-}
-
-#define update_array(ar1, len1, ar2, len2, s) ({ar1 = _update_array(ar1, len1, ar2, len2, s); ar1; })
-static void *_update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s)
-{
-    // Dependencias: resize_array, copy_array
-    resize_array(ar1, len1, len1 + len2, s);
-    copy_array(ar1 + len1 * s, ar2, len2, s);
-    return ar1;
-}
-
-void rearrange_positives_negatives_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
-{
-    void *pivo = calloc(1, s);
-    length *= s;
-    for (int j = 0, i = -s; j < length; j += s)
+    for (int i = 0; i < n; i += s)
+        new_length += !condicao(*array + i);
+    
+    if(new_length == length) return length;
+    if(new_length == 0) 
     {
-        if (LESS_THAN(cmp(array + j, pivo)))
+        free(*array);
+        return 0;
+    }
+
+    void *new = calloc(new_length, s);
+    for (int i = 0, j = 0; i < n; i += s)
+    {
+        if(!condicao(*array + i))
         {
-            i += s;
-            swap(array + j, array + i, s);
+            memcpy(new + j, *array + i, s);
+            j += s;
         }
     }
+    
+    free(*array);
+    *array = new;
+    return new_length;
 }
-
-void merge_sorted_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s, int (*cmp)(const void *, const void *))
+int update_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s)
 {
-    /* NEED TESTS */
-    int next_gap(int gap, size_t s)
-    {
-        return gap > s ? (((gap / 2) + (gap % 2)) / s) * s : 0;
-    }
-    int i, j;
-    len1 *= s;
-    len2 *= s;
-    int gap = len1 + len2;
-    for (gap = next_gap(gap, s); gap; gap = next_gap(gap, gap + s))
-    {
-        for (i = 0; i + gap < len1; i += s)
-            if (GREATER_THAN(cmp(ar1 + i, ar1 + i + gap)))
-                swap(ar1 + i, ar1 + i + gap, s);
-
-        for (j = gap > len1 ? gap - len1 : 0; i < len1 && j < len2; j += s, i += s)
-            if (GREATER_THAN(cmp(ar1 + i, ar2 + j)))
-                swap(ar1 + i, ar2 + j, s);
-
-        if (j < len2)
-            for (j = 0; j + gap < len2; j++)
-                if (GREATER_THAN(cmp(ar2 + j, ar2 + j + gap)))
-                    swap(ar2 + j, ar2 + j + gap, s);
-    }
+    resize_array(ar1, len1, len1 + len2, s);
+    copy_array(ar1 + len1 * s, ar2, len2, s);
+    return len1 + len2;
 }
-
+// -------------------------------------------- //
+//              Funcoes de busca                //
+// -------------------------------------------- //
+int find_array(void *array, void *element, size_t length, size_t s, int (*cmp)(const void *, const void *))
+{
+    length *= s;
+    for (int i = 0; i < length; i += s)
+        if (EQUAL_TO(cmp(array + i, element)))
+            return i / s;
+    return -1;
+}
+int rfind_array(void *array, void *element, size_t length, size_t s, int (*cmp)(const void *, const void *))
+{
+    length *= s;
+    for (int i = length - s; i >= 0; i -= s)
+        if (EQUAL_TO(cmp(array + i, element)))
+            return i / s;
+    return -1;
+}
+int max_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
+{
+    length *= s;
+    int max = 0;
+    for (int i = 1; i < length; i += s)
+        if (GREATER_THAN(cmp(array + i, array + max)))
+            max = i;
+    return max / s;
+}
+int min_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
+{
+    length *= s;
+    int min = 0;
+    for (int i = 1; i < length; i += s)
+        if (LESS_THAN(cmp(array + i, array + min)))
+            min = i;
+    return min / s;
+}
+// -------------------------------------------- //
+//          Funcoes de verificacao              //
+// -------------------------------------------- //
+int equals_array(void *ar1, void *ar2, size_t length, size_t s, int (*cmp)(const void *, const void *))
+{
+    length *= s;
+    for(int i = 0; i < length; i += s)
+        if(NOT_EQUAL_TO(cmp(ar1 + i, ar2 + i)))
+            return 0;
+    return 1;
+}
+int is_sorted_array(void *array, size_t length, size_t size, int (*cmp)(const void*,const void*))
+{
+    length = length * size;
+    for (int i = 1; i < length; i += size)
+        if(GREATER_THAN(cmp(array + i, array + i + size)))
+            return 0;
+    return 1;
+}
+int is_reversed_array(void *array, size_t length, size_t size, int (*cmp)(const void*,const void*))
+{
+    length = length * size;
+    for (int i = 1; i < length; i += size)
+        if(LESS_THAN(cmp(array + i, array + i + size)))
+            return 0;
+    return 1;
+}
+// -------------------------------------------- //
+//       Funcoes para tipos especificos         //
+// -------------------------------------------- //
 /* INT */
 int *random_array(int begin, int end, int n)
 {
-    // Dependencias: tipos_primarios.h
     if (begin > end)
         swap(&begin, &end, sizeof(int));
 
@@ -387,7 +527,6 @@ int sum_array(int *v, int n)
 /* FLOAT */
 float *random_arrayf(float begin, float end, int n)
 {
-    // Dependencias: tipos_primarios.h
     if (begin > end)
         swap(&begin, &end, sizeof(float));
 
@@ -449,5 +588,48 @@ double sum_arraylf(double *v, int n)
     while (--n)
         s += v[n - 1];
     return s;
+}
+// -------------------------------------------- //
+// Novas funcoes... Talvez sejam apagadas       //
+// -------------------------------------------- //
+void rearrange_positives_negatives_array(void *array, size_t length, size_t s, int (*cmp)(const void *, const void *))
+{
+    void *pivo = calloc(1, s);
+    length *= s;
+    for (int j = 0, i = -s; j < length; j += s)
+    {
+        if (LESS_THAN(cmp(array + j, pivo)))
+        {
+            i += s;
+            swap(array + j, array + i, s);
+        }
+    }
+}
+void merge_sorted_array(void *ar1, size_t len1, void *ar2, size_t len2, size_t s, int (*cmp)(const void *, const void *))
+{
+    /* NEED TESTS */
+    int next_gap(int gap, size_t s)
+    {
+        return gap > s ? (((gap / 2) + (gap % 2)) / s) * s : 0;
+    }
+    int i, j;
+    len1 *= s;
+    len2 *= s;
+    int gap = len1 + len2;
+    for (gap = next_gap(gap, s); gap; gap = next_gap(gap, gap + s))
+    {
+        for (i = 0; i + gap < len1; i += s)
+            if (GREATER_THAN(cmp(ar1 + i, ar1 + i + gap)))
+                swap(ar1 + i, ar1 + i + gap, s);
+
+        for (j = gap > len1 ? gap - len1 : 0; i < len1 && j < len2; j += s, i += s)
+            if (GREATER_THAN(cmp(ar1 + i, ar2 + j)))
+                swap(ar1 + i, ar2 + j, s);
+
+        if (j < len2)
+            for (j = 0; j + gap < len2; j++)
+                if (GREATER_THAN(cmp(ar2 + j, ar2 + j + gap)))
+                    swap(ar2 + j, ar2 + j + gap, s);
+    }
 }
 #endif

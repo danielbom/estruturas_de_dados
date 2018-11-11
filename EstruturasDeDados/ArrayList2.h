@@ -15,44 +15,73 @@ typedef struct arraylist
     int (*print)(const void*);
 } ArrayList;
 
-/* CONSTRUTOR E DESTRUTOR */
+// ------------------------------------------ //
+//      Funcoes de construir e destruir       //
+// ------------------------------------------ //
 ArrayList* new_ArrayList(size_t size, int length);  // 10/11/2018
 void delete_ArrayList(ArrayList **self);            // 10/11/2018
-
 void delete_with_ArrayList(ArrayList **self, void (*delete)(const void*)); // TODO
-
-/* FUNCOES DE INSERCAO */
-bool push_back_ArrayList(ArrayList *self, void *elem);  // 10/11/2018
-bool push_front_ArrayList(ArrayList *self, void *elem); // 10/11/2018
-
-/* FUNCOES DE REMOCAO */
+ArrayList* dup_ArrayList(ArrayList *self);          // 10/11/2018
+// ------------------------------------------ //
+//             Funcoes de insercao            //
+// ------------------------------------------ //
+bool push_back_ArrayList(ArrayList *self, void *value);  // 10/11/2018
+bool push_front_ArrayList(ArrayList *self, void *value); // 10/11/2018
+bool insert_ArrayList(ArrayList *self, void *value, int pos);
+bool set_in_ArrayList(ArrayList *self, void *value, int pos);
+// ------------------------------------------ //
+//              Funcoes de remocao            //
+// ------------------------------------------ //
 bool pop_back_ArrayList(ArrayList *self);        // 10/11/2018
 bool pop_front_ArrayList(ArrayList *self);       // 10/11/2018
 void *pop_back_data_ArrayList(ArrayList *self);  // 10/11/2018
 void *pop_front_data_ArrayList(ArrayList *self); // 10/11/2018
+// ------------------------------------------ //
+//            Funcoes de manipulacao          //
+// ------------------------------------------ //
+void unique_ArrayList(ArrayList *self, int (*cmp)(const void *, const void *));
+void sort_ArrayList(ArrayList *self, int (*cmp)(const void *, const void *));
+void reverse_ArrayList(ArrayList *self);
 
-/* FUNCOES AUXILIARES */
 void resize_ArrayList(ArrayList *self, int length); // 10/11/2018
 void shrink_ArrayList(ArrayList *self);             // 10/11/2018
-
 void shift_ArrayList(ArrayList *self, int n_shift); // 10/11/2018
-ArrayList* dup_ArrayList(ArrayList *self);          // 10/11/2018
+void clear_ArrayList(ArrayList *self);              // 10/11/2018
+
+void swap_ArrayList(ArrayList *arraylist1, ArrayList *arraylist2);
+
+ArrayList* random_int_ArrayList(int begin, int end, int length); // 10/11/2018
+// ------------------------------------------ //
+//            Funcoes de verificacao          //
+// ------------------------------------------ //
+int equals_ArrayList(ArrayList *arraylist1, ArrayList *arraylist2, int (*cmp)(const void *, const void *));
 
 bool empty_ArrayList(ArrayList *self); // 10/11/2018
 bool full_ArrayList(ArrayList *self);  // 10/11/2018
 
-void* begin_ArrayList(ArrayList *self); // 10/11/2018
-void* end_ArrayList(ArrayList *self);   // 10/11/2018
-
-ArrayList* random_int_ArrayList(int begin, int end, int length); // 10/11/2018
-
-void* clear_ArrayList(ArrayList *self);
-
+bool is_sorted_ArrayList(ArrayList *self, int (*cmp)(const void*, const void*));
+bool is_reversed_ArrayList(ArrayList *self, int (*cmp)(const void*, const void*));
+// ------------------------------------------ //
+//              Funcoes de impressao          //
+// ------------------------------------------ //
 void print_ArrayList(ArrayList *self, void (*print)(const void*));
 void println_ArrayList(ArrayList *self, void (*print)(const void*));
 void print_if_ArrayList(ArrayList *self, void (*print)(const void*), int (*condition)(const void*));
+// ------------------------------------------ //
+//              Funcoes de iteracao           //
+// ------------------------------------------ //
+void* begin_ArrayList(ArrayList *self); // 10/11/2018
+void* end_ArrayList(ArrayList *self);   // 10/11/2018
 
-/* CONSTRUTOR E DESTRUTOR */
+
+
+/* Implementacoes ArrayList */
+
+
+
+// ------------------------------------------ //
+//      Funcoes de construir e destruir       //
+// ------------------------------------------ //
 ArrayList *new_ArrayList(size_t size, int length)
 {
     if(length <= 0) return NULL;
@@ -72,47 +101,131 @@ void delete_ArrayList(ArrayList **self)
     free((*self)->array);
     free(*self);
 }
-
-/* FUNCOES DE INSERCAO */
-bool push_back_ArrayList(ArrayList *self, void *elem)
+ArrayList* dup_ArrayList(ArrayList *self)
+{
+    ArrayList* new = malloc(sizeof(ArrayList));
+    new->array = copy_array(
+        malloc(self->size * self->length),
+        self->array,
+        self->quantity,
+        self->size
+        );
+    new->quantity = self->quantity;
+    new->length = self->length;
+    new->size = self->size;
+    
+    return new;
+}
+// ------------------------------------------ //
+//             Funcoes de insercao            //
+// ------------------------------------------ //
+bool push_back_ArrayList(ArrayList *self, void *value)
 {
     if(full_ArrayList(self))
-        resize_ArrayList(self, self->length + 1);
+        resize_ArrayList(
+            self,
+            self->length + 1
+            );
     
-    memcpy(end_ArrayList(self) + self->size, elem, self->size);
+    memcpy(
+        end_ArrayList(self) + self->size,
+        value,
+        self->size
+        );
     self->quantity++;
 }
-bool push_front_ArrayList(ArrayList *self, void *elem)
+bool push_front_ArrayList(ArrayList *self, void *value)
 {
     if(full_ArrayList(self))
         shift_ArrayList(self, 1);
+    else
+        rcopy_array(
+            self->array + self->size,
+            self->array,
+            self->quantity,
+            self->size
+            );
     
-    memcpy(self->array, elem, self->size);
+    memcpy(self->array, value, self->size);
     self->quantity++;
 }
+bool insert_ArrayList(ArrayList *self, void *value, int pos)
+{
+    if(pos < 0) pos = self->quantity + pos + 1;
+    if(pos < 0) return 0;
 
-/* FUNCOES DE REMOCAO */
+
+    if(self->quantity == pos)
+    {   
+        push_back_ArrayList(self, value);
+        return 1;
+    }
+    else if(0 == pos)
+    {   
+        push_front_ArrayList(self, value);
+        return 1;
+    }
+    else if(self->quantity >= self->length)
+        resize_ArrayList(self, self->length + 1);
+
+    rcopy_array(
+        self->array + (pos + 1) * self->size,
+        self->array + pos * self->size,
+        self->quantity - pos,
+        self->size
+        );
+    memcpy(
+        self->array + pos * self->size, 
+        value, 
+        self->size
+        );
+    self->quantity++;
+    return 1;
+}
+bool set_in_ArrayList(ArrayList *self, void *value, int pos)
+{
+    if(pos >= self->quantity) return 0;
+    if(pos < 0) pos = self->quantity + pos;
+    if(pos < 0) return 0;
+    memcpy(
+        self->array + self->size * pos,
+        value,
+        self->size
+        );
+    return 1;
+}
+// ------------------------------------------ //
+//              Funcoes de remocao            //
+// ------------------------------------------ //
 bool pop_back_ArrayList(ArrayList *self)
 {
-    if(empty_ArrayList(self))
-        return 0;
-
-    self->quantity--;
-    return 1;
+    void* data = pop_back_data_ArrayList(self);
+    if(data)
+    {
+        free(data);
+        return 1;
+    }
+    return 0;
 }
 bool pop_front_ArrayList(ArrayList *self)
 {
-    if(empty_ArrayList(self))
-        return 0;
-    shift_ArrayList(self, -1);
-    self->quantity--;
-    return 1;
+    void* data = pop_front_data_ArrayList(self);
+    if(data)
+    {
+        free(data);
+        return 1;
+    }
+    return 0;
 }
 void *pop_back_data_ArrayList(ArrayList *self)
 {
     if(empty_ArrayList(self))
         return NULL;
-    void* data = memcpy(data, end_ArrayList(self), self->size);
+    void* data = memcpy(
+        malloc(self->size), 
+        end_ArrayList(self), 
+        self->size
+        );
     
     self->quantity--;
     return data;
@@ -121,15 +234,42 @@ void *pop_front_data_ArrayList(ArrayList *self)
 {
     if(empty_ArrayList(self))
         return NULL;
-    void* data = memcpy(data, end_ArrayList(self), self->size);
+    void* data = memcpy(
+        malloc(self->size),
+        end_ArrayList(self),
+        self->size
+        );
     
-    shift_ArrayList(self, -1);
-
-    self->quantity--;
+    copy_array(
+        self->array,
+        self->array + self->size,
+        self->quantity--,
+        self->size
+        );
     return data;
 }
 
-/* FUNCOES AUXILIARES */
+// ------------------------------------------ //
+//            Funcoes de manipulacao          //
+// ------------------------------------------ //
+void unique_ArrayList(ArrayList *self, int (*cmp)(const void *, const void *))
+{
+    self->quantity = unique_array(
+        self->array,
+        self->quantity,
+        self->size,
+        cmp
+        );
+}
+void sort_ArrayList(ArrayList *self, int (*cmp)(const void *, const void *))
+{
+    qsort(self->array, self->quantity, self->size, cmp);
+}
+void reverse_ArrayList(ArrayList *self)
+{
+    reverse_array(self->array, self->quantity, self->size);
+}
+
 void resize_ArrayList(ArrayList *self, int new_length)
 {
     if(new_length > 0)
@@ -146,7 +286,6 @@ void shrink_ArrayList(ArrayList *self)
 {
     resize_ArrayList(self, self->quantity);
 }
-
 void shift_ArrayList(ArrayList *self, int n_shift)
 {
     if(n_shift != 0)
@@ -159,41 +298,17 @@ void shift_ArrayList(ArrayList *self, int n_shift)
         self->length = self->length + n_shift;
     }
 }
-bool empty_ArrayList(ArrayList *self)
-{
-    return self->quantity == 0;
-}
-bool full_ArrayList(ArrayList *self)
-{
-    return self->quantity == self->length;
-}
-
-void* begin_ArrayList(ArrayList *self)
-{
-    return self->array;
-}
-void* end_ArrayList(ArrayList *self)
-{
-    return self->array + (self->quantity - 1) * self->size;
-}
-
-void* clear_ArrayList(ArrayList *self)
+void clear_ArrayList(ArrayList *self)
 {
     self->quantity = 0;
 }
 
-
-void print_ArrayList(ArrayList *self, void (*print)(const void*))
+void swap_ArrayList(ArrayList *arraylist1, ArrayList *arraylist2)
 {
-    print_array(self->array, self->quantity, self->size, print);
-}
-void println_ArrayList(ArrayList *self, void (*print)(const void*))
-{
-    println_array(self->array, self->quantity, self->size, print);
-}
-void print_if_ArrayList(ArrayList *self, void (*print)(const void*), int (*condition)(const void*))
-{
-    print_if_array(self->array, self->quantity, self->size, print, condition);
+    pswap(arraylist1->array, arraylist2->array);
+    swap(&arraylist1->quantity, &arraylist2->quantity, sizeof(int));
+    swap(&arraylist1->length, &arraylist2->length, sizeof(int));
+    swap(&arraylist1->size, &arraylist2->size, sizeof(size_t));
 }
 
 ArrayList* random_int_ArrayList(int begin, int end, int length)
@@ -209,4 +324,65 @@ ArrayList* random_int_ArrayList(int begin, int end, int length)
 
     return new;
 }
+// ------------------------------------------ //
+//            Funcoes de verificacao          //
+// ------------------------------------------ //
+int equals_ArrayList(ArrayList *arraylist1, ArrayList *arraylist2, int (*cmp)(const void *, const void *))
+{
+    if (arraylist1->quantity != arraylist2->quantity)
+        return false;
+    if (arraylist1->size != arraylist2->size)
+        return false;
+    
+    return equals_array(
+        arraylist1->array,
+        arraylist2->array,
+        arraylist1->quantity,
+        arraylist1->size,
+        cmp
+        );
+}
+bool empty_ArrayList(ArrayList *self)
+{
+    return self->quantity == 0;
+}
+bool full_ArrayList(ArrayList *self)
+{
+    return self->quantity == self->length;
+}
+bool is_sorted_ArrayList(ArrayList *self, int (*cmp)(const void*, const void*))
+{
+    return is_sorted_array(self->array, self->quantity, self->size, cmp);
+}
+bool is_reversed_ArrayList(ArrayList *self, int (*cmp)(const void*, const void*))
+{
+    return is_reversed_array(self->array, self->quantity, self->size, cmp);
+}
+// ------------------------------------------ //
+//              Funcoes de iteracao           //
+// ------------------------------------------ //
+void* begin_ArrayList(ArrayList *self)
+{
+    return self->array;
+}
+void* end_ArrayList(ArrayList *self)
+{
+    return self->array + (self->quantity - 1) * self->size;
+}
+// ------------------------------------------ //
+//              Funcoes de impressao          //
+// ------------------------------------------ //
+void print_ArrayList(ArrayList *self, void (*print)(const void*))
+{
+    print_array(self->array, self->quantity, self->size, print);
+}
+void println_ArrayList(ArrayList *self, void (*print)(const void*))
+{
+    println_array(self->array, self->quantity, self->size, print);
+}
+void print_if_ArrayList(ArrayList *self, void (*print)(const void*), int (*condition)(const void*))
+{
+    print_if_array(self->array, self->quantity, self->size, print, condition);
+}
+
 #endif
