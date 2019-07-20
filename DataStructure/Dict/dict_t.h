@@ -1,7 +1,7 @@
 #ifndef DICT_T
 #define DICT_T
 
-#include "array_t.h"
+#include "../Array/array_t.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -28,7 +28,7 @@ dict_t* dict_set( dict_t* self, char* key, void* val );
 void* dict_get( dict_t* self, char* key );
 void dict_del( dict_t** pself );
 
-const static dict_t Dict = {
+static const dict_t Dict = {
     0, 0,
     &dict_new,
     &dict_init,

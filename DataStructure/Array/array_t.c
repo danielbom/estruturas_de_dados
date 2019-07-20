@@ -20,10 +20,12 @@ void array_assertion( array_t *self ) {
 }
 void array_t_open_block( array_t* self, int pos ) {
     int n = self->length( self );
-    for ( int i = n; i > pos; i-- ) {
-        void* ptr = __array_t_sift( self, i );
-        memcpy(ptr, ptr - self->_size, self->_size );
-    }
+    for ( int i = n; i > pos; i-- )
+        memcpy(
+            __array_t_sift( self, i ),
+            __array_t_sift( self, i-1 ),
+            self->_size
+        );
 }
 void array_resize2( void** ptr_array, uint_least8_t size, int_fast16_t length ) {
     void *old_array = *ptr_array;
@@ -46,7 +48,7 @@ void array_resize( array_t *self ) {
 //           Constructor and destructor          ||
 // --------------------------------------------- ||
 array_t* array_init( array_t *self, uint_least8_t size, int_fast16_t length ) {
-    if ( self == NULL || size < 0 || length < 0 ) {
+    if ( self == NULL || size == 0 || length <= 0 ) {
         printf("Input: %p, %d, %ld\n", self, size, length );
         perror("Invalid argument array_init\n" );
         exit(-1 );

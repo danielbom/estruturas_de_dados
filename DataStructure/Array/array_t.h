@@ -51,7 +51,7 @@ int_fast16_t array_bsearch( array_t *self, void* val, int (*cmp)( const void*, c
 int_fast16_t array_length ( array_t *self );
 
 // Singleton operation
-const static array_t Array = {
+static const array_t Array = {
     0, 0, 0, 0,
     &array_new,
     &array_init,
