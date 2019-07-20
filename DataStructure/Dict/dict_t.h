@@ -12,8 +12,8 @@ typedef struct dict_t dict_t;
 // --------------------------------------------- ||
 
 struct dict_t {
-    array_t* _keys;
-    array_t* _values;
+    array_t* keys;
+    array_t* values;
 
     dict_t* (*new)  ( uint_least8_t size );
     dict_t* (*init)( dict_t*, uint_least8_t );
