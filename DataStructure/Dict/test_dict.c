@@ -4,16 +4,18 @@
 dict_t* d;
 
 int cmpInt(const void* a, const void* b) {
-    int x = *(int*) a;
-    int y = *(int*) b;
-    int cmp = x - y;
+    int *x = memcpy(malloc(sizeof(int)), a, sizeof(int));
+    int *y = memcpy(malloc(sizeof(int)), b, sizeof(int));
+    int cmp = *x - *y;
+    free(x);
+    free(y);
     return cmp;
 }
 
 void onInit() {
     printf("New\n");
     d = dict_new( sizeof(int) );
-    printf("Init %p\n", d);
+    printf("Init %p\n", (void*) d);
 }
 
 void onDelete() {
@@ -39,26 +41,26 @@ void test_1() {
 
 
     res = d->get( d, "a" );
-    printf("a: %d %d %p\n", 0, res ? *res : -1, res);
+    printf("a: %d %d %p\n", 0, res ? *res : -1, (void*) res);
 
     res = d->get( d, "aa" );
-    printf("aa: %d %d %p\n", -1, res ? *res : -1, res);
+    printf("aa: %d %d %p\n", -1, res ? *res : -1, (void*) res);
 
     res = d->get( d, "z" );
-    printf("z: %d %d %p\n", 40, res ? *res : -1, res);
+    printf("z: %d %d %p\n", 40, res ? *res : -1, (void*) res);
 
     res = d->get( d, "b" );
-    printf("b: %d %d %p\n", 100, res ? *res : -1, res);
+    printf("b: %d %d %p\n", 100, res ? *res : -1, (void*) res);
 
     res = d->get( d, "k" );
-    printf("k: %d %d %p\n", 900, res ? *res : -1, res);
+    printf("k: %d %d %p\n", 900, res ? *res : -1, (void*) res);
 
     onDelete();
 }
 
-int main(int argc, char const *argv[]) {
+int main() {
 
-    
+
     test_1();
 
 

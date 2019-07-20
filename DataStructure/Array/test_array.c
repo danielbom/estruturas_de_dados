@@ -6,16 +6,16 @@
 array_t* a;
 
 int cmpInt(const void* a, const void* b) {
-    int x = *(int*) a;
-    int y = *(int*) b;
-    int cmp = x - y;
+    int *x = (int*) a;
+    int *y = (int*) b;
+    int cmp = *x - *y;
     return cmp;
 }
 
 void onInit() {
     printf("New\n");
     a = Array.new( sizeof(int), 4 );
-    printf("Init %p\n", a);
+    printf("Init %p\n", (void*) a);
 }
 
 void print() {
@@ -23,7 +23,7 @@ void print() {
     printf("Print %d\n", n);
     for (int i = 0; i < n; i++) {
         int *p = Array.get(a, i);
-        printf("%d %d %p\n", i, *p, p);
+        printf("%d %d %p\n", i, *p, (void*) p);
     }
     printf("\n");
 }
