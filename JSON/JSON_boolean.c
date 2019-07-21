@@ -25,3 +25,13 @@ void* JSON_boolean_get( JSON_object_t* self ) {
 void JSON_boolean_set( JSON_object_t* self, void* val ) {
     memcpy( self->value, val, JSON_boolean_size_value() );
 }
+
+// Utils
+void JSON_boolean_print( JSON_object_t* self ) {
+    char boolean = *(char*) self->get( self );
+    if (boolean) {
+        printf("true");
+    } else {
+        printf("false");
+    }
+}

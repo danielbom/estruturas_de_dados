@@ -12,13 +12,17 @@ void JSON_boolean_del( JSON_object_t** pself );
 void* JSON_boolean_get( JSON_object_t* self );
 void  JSON_boolean_set( JSON_object_t* self, void* val );
 
+// Utils
+void JSON_boolean_print( JSON_object_t* self );
+
 static const JSON_object_t JSON_boolean = {
     "Boolean", 0,
     &JSON_boolean_new,
     &JSON_boolean_init,
     &JSON_boolean_del,
     &JSON_boolean_get,
-    &JSON_boolean_set
+    &JSON_boolean_set,
+    &JSON_boolean_print
 };
 
 

@@ -24,3 +24,8 @@ void* JSON_number_get( JSON_object_t* self ) {
 void  JSON_number_set( JSON_object_t* self, void* val ) {
     memcpy( self->value, val, JSON_number_size_value()  );
 }
+
+// Utils
+void JSON_number_print( JSON_object_t* self ) {
+    printf( "%lld", *(long long int*) self->get( self ) );
+}
