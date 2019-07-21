@@ -1,6 +1,6 @@
 #include "JSON_object.h"
 
-inline long long int JSON_object_size_value() {
+extern inline long long int JSON_object_size_value() {
     return sizeof( dict_t );
 }
 

@@ -1,6 +1,6 @@
 #include "JSON_array.h"
 
-inline long long int JSON_array_size_value() {
+extern inline long long int JSON_array_size_value() {
     return sizeof( array_t );
 }
 

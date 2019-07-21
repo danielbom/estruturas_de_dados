@@ -1,6 +1,6 @@
 #include "JSON_number.h"
 
-inline long long int JSON_number_size_value() {
+extern inline long long int JSON_number_size_value() {
     return sizeof( long long int );
 }
 

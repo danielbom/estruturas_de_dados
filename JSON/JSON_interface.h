@@ -22,7 +22,7 @@ struct json_object_t {
     void  (*set)( JSON_object_t* self, void* val );
 };
 
-JSON_object_t* JSON_new() {
+static JSON_object_t* JSON_new() {
     return (JSON_object_t*) calloc(1, sizeof(JSON_object_t));
 }
 

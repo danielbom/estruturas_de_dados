@@ -1,6 +1,6 @@
 #include "JSON_boolean.h"
 
-inline long long int JSON_boolean_size_value() {
+extern inline long long int JSON_boolean_size_value() {
     return sizeof( char );
 }
 

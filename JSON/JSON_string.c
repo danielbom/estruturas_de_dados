@@ -1,6 +1,6 @@
 #include "JSON_string.h"
 
-inline long long int JSON_string_size_value() {
+extern inline long long int JSON_string_size_value() {
     return sizeof( char* );
 }
 
