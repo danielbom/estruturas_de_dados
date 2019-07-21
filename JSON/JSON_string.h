@@ -4,9 +4,9 @@
 #include "JSON_interface.h"
 
 // Constructor and destructor
-JSON_object_t* (JSON_string_new)( void );
-JSON_object_t* (JSON_string_init)( JSON_object_t* self );
-JSON_object_t* (JSON_string_del)( JSON_object_t** pself );
+JSON_object_t* JSON_string_new( void );
+JSON_object_t* JSON_string_init( JSON_object_t* self );
+void JSON_string_del( JSON_object_t** pself );
 
 static const JSON_object_t JSON_string = {
     "Object", 0,

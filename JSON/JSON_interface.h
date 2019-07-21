@@ -3,6 +3,7 @@
 
 #include <stdlib.h> // calloc
 #include <string.h> // memcpy
+#include <stdio.h>  // printf
 
 typedef struct json_object_t JSON_object_t;
 
@@ -14,7 +15,7 @@ struct json_object_t {
     // Constructor and destructor
     JSON_object_t* (*New) ( void );
     JSON_object_t* (*init)( JSON_object_t* self );
-    JSON_object_t* (*del) ( JSON_object_t** pself );
+    void (*del) ( JSON_object_t** pself );
 
     // Getter and setter
     void* (*get)( JSON_object_t* self );

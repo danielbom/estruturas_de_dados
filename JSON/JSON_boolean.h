@@ -4,9 +4,9 @@
 #include "JSON_interface.h"
 
 // Constructor and destructor
-JSON_object_t* (JSON_boolean_new)( void );
-JSON_object_t* (JSON_boolean_init)( JSON_object_t* self );
-JSON_object_t* (JSON_boolean_del)( JSON_object_t** pself );
+JSON_object_t* JSON_boolean_new( void );
+JSON_object_t* JSON_boolean_init( JSON_object_t* self );
+void JSON_boolean_del( JSON_object_t** pself );
 
 // Getter and setter
 void* JSON_boolean_get( JSON_object_t* );
