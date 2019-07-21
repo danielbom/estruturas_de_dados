@@ -14,7 +14,7 @@ JSON_object_t* JSON_array_init( JSON_object_t* self ) {
     return self;
 }
 void JSON_array_del( JSON_object_t** pself ) {
-    printf("(ARRAY) Não implementado!");
+    printf("(%s) Não implementado!", (*pself)->type);
 }
 
 

@@ -14,7 +14,7 @@ JSON_object_t* JSON_boolean_init( JSON_object_t* self ) {
     return self;
 }
 void JSON_boolean_del( JSON_object_t** pself ) {
-    printf("(BOOL) Não implementado!");
+    printf("(%s) Não implementado!", (*pself)->type);
 }
 
 

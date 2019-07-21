@@ -14,7 +14,7 @@ JSON_object_t* JSON_number_init( JSON_object_t* self ) {
     return self;
 }
 void JSON_number_del( JSON_object_t** pself ) {
-    printf("(NUMBER) Não implementado!");
+    printf("(%s) Não implementado!", (*pself)->type);
 }
 
 // Getter and setter
