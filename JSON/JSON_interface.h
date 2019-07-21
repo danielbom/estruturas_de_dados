@@ -17,8 +17,8 @@ struct json_object_t {
     JSON_object_t* (*del) ( JSON_object_t** pself );
 
     // Getter and setter
-    void* (*get)( void );
-    void  (*set)( void* );
+    void* (*get)( JSON_object_t* self );
+    void  (*set)( JSON_object_t* self, void* val );
 };
 
 JSON_object_t* JSON_new() {
