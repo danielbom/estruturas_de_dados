@@ -14,7 +14,7 @@ int cmpInt(const void* a, const void* b) {
 
 void onInit() {
     printf("New\n");
-    a = Array.new( sizeof(int), 4 );
+    a = Array.New( sizeof(int), 4 );
     printf("Init %p\n", (void*) a);
 }
 

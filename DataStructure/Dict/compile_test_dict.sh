@@ -7,5 +7,6 @@ FLAGS="-Wextra -Wall -Wshadow "
 
 # Compiling
 gcc $FLAGS -c test_dict.c dict_t.c $DEP
-gcc -g -o $1 test_dict.o dict_t.o $DEP_OBJ
+gcc -o $1 test_dict.o dict_t.o $DEP_OBJ
+gcc -g test_dict.c dict_t.c $DEP_OBJ -o debug
 rm *.o

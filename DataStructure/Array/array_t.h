@@ -18,37 +18,43 @@ struct array_t {
     void* _array;
 
     // Constructor and destructor
-    array_t* (*new) ( uint_least8_t size, int_fast16_t length );
-    array_t* (*init)  ( array_t* self, uint_least8_t size, int_fast16_t length );
-    void  (*del)   ( array_t** self );
+    array_t* (*New) ( uint_least8_t size, int_fast16_t length );
+    array_t* (*init)( array_t* self, uint_least8_t size, int_fast16_t length );
+    void     (*del) ( array_t** self );
+
     // Insert/Update
-    void  (*append)( array_t* self, void* val );
-    void  (*set)   ( array_t* self, void* val, int_fast16_t pos);
-    void (*insert)( array_t* self, void* val, int_fast16_t pos );
-    int_fast16_t (*insort) ( array_t* self, void* val, int (*cmp)( const void*, const void* ) );
+    void         (*append)( array_t* self, void* val );
+    void         (*set)   ( array_t* self, void* val, int_fast16_t pos);
+    void         (*insert)( array_t* self, void* val, int_fast16_t pos );
+    int_fast16_t (*insort)( array_t* self, void* val, int (*cmp)( const void*, const void* ) );
+
     // Query
-    void* (*get)   ( array_t* self, int_fast16_t pos );
+    void*        (*get)    ( array_t* self, int_fast16_t pos );
     int_fast16_t (*bsearch)( array_t* self, void* val, int (*cmp)( const void*, const void* ) );
+
     // Utils
-    void (*fatten)( array_t* self );
+    void         (*fatten)( array_t* self );
     int_fast16_t (*length)( array_t* self);
 };
 
+// Constructor and destructor
 array_t* array_new ( uint_least8_t size, int_fast16_t length );
 array_t* array_init( array_t *self, uint_least8_t size, int_fast16_t length );
+void     array_del ( array_t **self );
 
-void array_del   ( array_t **self );
-void array_append( array_t *self, void* val );
-void* array_get  ( array_t *self, int_fast16_t pos );
-void array_set   ( array_t *self, void* val, int_fast16_t pos );
+// Insert/Update
+void         array_append( array_t *self, void* val );
+void         array_set   ( array_t *self, void* val, int_fast16_t pos );
+void         array_insert( array_t *self, void* val, int_fast16_t pos );
+int_fast16_t array_insort( array_t *self, void* val, int (*cmp)( const void*, const void* ) );
 
-void array_insert ( array_t *self, void* val, int_fast16_t pos );
-void array_fatten ( array_t *self );
-
-int_fast16_t array_insort ( array_t *self, void* val, int (*cmp)( const void*, const void* ) );
+// Query
+void*        array_get    ( array_t *self, int_fast16_t pos );
 int_fast16_t array_bsearch( array_t *self, void* val, int (*cmp)( const void*, const void* ) );
 
-int_fast16_t array_length ( array_t *self );
+// Utils
+void         array_fatten( array_t *self );
+int_fast16_t array_length( array_t *self );
 
 // Singleton operation
 static const array_t Array = {
