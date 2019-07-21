@@ -5,7 +5,7 @@
 
 // Constructor and destructor
 JSON_object_t* (JSON_object_new)( void );
-JSON_object_t* (JSON_object_init)();
+JSON_object_t* (JSON_object_init)( JSON_object_t* self );
 JSON_object_t* (JSON_object_del)( JSON_object_t** pself );
 
 static const JSON_object_t JSON_object = {
