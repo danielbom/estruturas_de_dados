@@ -13,19 +13,8 @@ JSON_object_t* JSON_array_init( JSON_object_t* self ) {
     self->value = Array.New( sizeof(JSON_object_t), 4 );
     return self;
 }
-void JSON_array_del( JSON_object_t** pself ) {
-    JSON_object_t* self = *pself;
-    array_t* value = JSON_get( self );
-    Array.del( &value );
-    free( self );
-    *pself = NULL;
-}
-
 
 // Getter and setter
-void* JSON_array_get( JSON_object_t* self ) {
-    return self->value;
-}
 void  JSON_array_set( JSON_object_t* self, void* val ) {
     memcpy( self->value, val, JSON_array_size_value() );
 }

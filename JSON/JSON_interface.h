@@ -47,4 +47,17 @@ static void JSON_set( JSON_object_t* self, void* val ) {
     self->set( self, val );
 }
 
+// Defaults
+static void  JSON_default_del( JSON_object_t** pself ) {
+    JSON_object_t* self = *pself;
+    void* value = JSON_get( self );
+    free( value );
+    free( self );
+    *pself = NULL;
+}
+static void* JSON_default_get( JSON_object_t* self ) {
+    return self->value;
+}
+
+
 #endif

@@ -13,18 +13,8 @@ JSON_object_t* JSON_string_init( JSON_object_t* self ) {
     self->value = calloc( 1, sizeof(char) );
     return self;
 }
-void JSON_string_del( JSON_object_t** pself ) {
-    JSON_object_t* self = *pself;
-    void* value = JSON_get( self );
-    free( value );
-    free( self );
-    *pself = NULL;
-}
 
 // Getter and setter
-void* JSON_string_get( JSON_object_t* self ) {
-    return self->value;
-}
 void JSON_string_set( JSON_object_t* self, void* val ) {
     free( self->value );
     self->value = strdup( val );
