@@ -136,9 +136,7 @@ int_fast16_t array_insort( array_t *self, void* val, int (*cmp)( const void*, co
 void* array_get( array_t *self, int_fast16_t pos ) {
     array_assertion( self );
     if ( pos < 0 || pos > self->_filled ) {
-        printf( "Input: %ld\n", pos );
-        perror( "Invalid argument array_insert\n" );
-        exit( -1 );
+        return NULL;
     }
     return __array_t_sift( self, pos  );
 }

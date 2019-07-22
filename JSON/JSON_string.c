@@ -14,7 +14,11 @@ JSON_object_t* JSON_string_init( JSON_object_t* self ) {
     return self;
 }
 void JSON_string_del( JSON_object_t** pself ) {
-    printf("(%s) Não implementado!", (*pself)->type);
+    JSON_object_t* self = *pself;
+    void* value = JSON_get( self );
+    free( value );
+    free( self );
+    *pself = NULL;
 }
 
 // Getter and setter
@@ -28,5 +32,5 @@ void JSON_string_set( JSON_object_t* self, void* val ) {
 
 // Utils
 void JSON_string_print( JSON_object_t* self ) {
-    printf("%s", (char*) self->get( self ));
+    printf("\"%s\"", (char*) self->get( self ));
 }

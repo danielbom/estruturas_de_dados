@@ -1,4 +1,4 @@
-
+#include <math.h>
 
 extern inline void ellipsef( float x, float px, float py, float a, float b, float *points ) {
     points[0] = cos(x) * px * a ;

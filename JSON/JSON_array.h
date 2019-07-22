@@ -13,13 +13,17 @@ void JSON_array_del( JSON_object_t** pself );
 void* JSON_array_get( JSON_object_t* self );
 void  JSON_array_set( JSON_object_t* self, void* val );
 
+// Utils
+void JSON_array_print( JSON_object_t* self );
+
 static const JSON_object_t JSON_array = {
     "Array", 0,
     &JSON_array_new,
     &JSON_array_init,
     &JSON_array_del,
     &JSON_array_get,
-    &JSON_array_set
+    &JSON_array_set,
+    &JSON_array_print
 };
 
 

@@ -14,7 +14,11 @@ JSON_object_t* JSON_array_init( JSON_object_t* self ) {
     return self;
 }
 void JSON_array_del( JSON_object_t** pself ) {
-    printf("(%s) Não implementado!", (*pself)->type);
+    JSON_object_t* self = *pself;
+    array_t* value = JSON_get( self );
+    Array.del( &value );
+    free( self );
+    *pself = NULL;
 }
 
 
@@ -24,4 +28,18 @@ void* JSON_array_get( JSON_object_t* self ) {
 }
 void  JSON_array_set( JSON_object_t* self, void* val ) {
     memcpy( self->value, val, JSON_array_size_value() );
+}
+
+// Utils
+void JSON_array_print( JSON_object_t* self ) {
+    JSON_object_t* obj;
+    array_t *array = (array_t*) self->get( self );
+    int length = Array.length( array );
+    printf("[");
+    for ( int i = 0; i < length; i++ ) {
+        obj = Array.get( array, i );
+        JSON_print( obj );
+        if ( (i+1) < length ) printf(", ");
+    }
+    printf("]");
 }
