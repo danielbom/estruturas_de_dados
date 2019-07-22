@@ -9,6 +9,9 @@ JSON_object_t* JSON_object_new( void );
 JSON_object_t* JSON_object_init( JSON_object_t* self );
 void JSON_object_del( JSON_object_t** pself );
 
+// Utils
+void JSON_object_print( JSON_object_t* self );
+
 static const JSON_object_t JSON_object = {
     "Object",
     sizeof(dict_t*),
@@ -17,7 +20,8 @@ static const JSON_object_t JSON_object = {
     &JSON_object_init,
     &JSON_object_del,
     &JSON_default_get,
-    &JSON_default_set
+    &JSON_default_set,
+    &JSON_object_print
 };
 
 #endif
