@@ -14,11 +14,6 @@ JSON_object_t* JSON_number_init( JSON_object_t* self ) {
     return self;
 }
 
-// Getter and setter
-void  JSON_number_set( JSON_object_t* self, void* val ) {
-    memcpy( self->value, val, JSON_number_size_value()  );
-}
-
 // Utils
 void JSON_number_print( JSON_object_t* self ) {
     printf( "%lld", *(long long int*) self->get( self ) );

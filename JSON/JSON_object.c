@@ -16,11 +16,3 @@ JSON_object_t* JSON_object_init( JSON_object_t* self ) {
 void JSON_object_del( JSON_object_t** pself ) {
     printf("(%s) Não implementado!", (*pself)->type);
 }
-
-// Getter and setter
-void* JSON_object_get( JSON_object_t* self ) {
-    return self->value;
-}
-void  JSON_object_set( JSON_object_t* self, void* val ) {
-    memcpy( self->value, val, JSON_object_size_value() );
-}

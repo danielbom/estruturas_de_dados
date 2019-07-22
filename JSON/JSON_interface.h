@@ -10,6 +10,7 @@ typedef struct json_object_t JSON_object_t;
 // type: string, array, number, object, boolean
 struct json_object_t {
     char  type[10];
+    size_t size;
     void* value;
 
     // Constructor and destructor
@@ -58,6 +59,8 @@ static void  JSON_default_del( JSON_object_t** pself ) {
 static void* JSON_default_get( JSON_object_t* self ) {
     return self->value;
 }
-
+static void  JSON_default_set( JSON_object_t* self, void* val ) {
+    memcpy( self->value, val, self->size );
+}
 
 #endif

@@ -14,12 +14,6 @@ JSON_object_t* JSON_string_init( JSON_object_t* self ) {
     return self;
 }
 
-// Getter and setter
-void JSON_string_set( JSON_object_t* self, void* val ) {
-    free( self->value );
-    self->value = strdup( val );
-}
-
 // Utils
 void JSON_string_print( JSON_object_t* self ) {
     printf("\"%s\"", (char*) self->get( self ));

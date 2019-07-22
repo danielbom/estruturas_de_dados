@@ -14,11 +14,6 @@ JSON_object_t* JSON_array_init( JSON_object_t* self ) {
     return self;
 }
 
-// Getter and setter
-void  JSON_array_set( JSON_object_t* self, void* val ) {
-    memcpy( self->value, val, JSON_array_size_value() );
-}
-
 // Utils
 void JSON_array_print( JSON_object_t* self ) {
     JSON_object_t* obj;
