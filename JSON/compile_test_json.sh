@@ -1,5 +1,5 @@
 
-JSON_LIB="JSON_array.c JSON_object.c JSON_string.c JSON_number.c JSON_boolean.c"
+JSON_LIB="JSON_objects/JSON_array.c JSON_objects/JSON_object.c JSON_objects/JSON_string.c JSON_objects/JSON_number.c JSON_objects/JSON_boolean.c"
 JSON_OBJ="JSON_array.o JSON_object.o JSON_string.o JSON_number.o JSON_boolean.o"
 
 DEP_LIB="../DataStructure/Array/array_t.c ../DataStructure/Dict/dict_t.c"
