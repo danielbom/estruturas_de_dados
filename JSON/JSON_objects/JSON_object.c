@@ -1,4 +1,4 @@
-#include "JSON_object.h"
+#include "../JSON_object.h"
 
 extern inline long long int JSON_object_size_value() {
     return sizeof( dict_t );

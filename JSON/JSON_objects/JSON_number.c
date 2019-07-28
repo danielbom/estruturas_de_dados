@@ -1,4 +1,4 @@
-#include "JSON_number.h"
+#include "../JSON_number.h"
 
 extern inline long long int JSON_number_size_value() {
     return sizeof( long long int );

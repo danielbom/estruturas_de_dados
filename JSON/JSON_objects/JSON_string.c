@@ -1,4 +1,4 @@
-#include "JSON_string.h"
+#include "../JSON_string.h"
 
 extern inline long long int JSON_string_size_value() {
     return sizeof( char* );

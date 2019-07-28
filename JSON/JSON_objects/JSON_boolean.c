@@ -1,4 +1,4 @@
-#include "JSON_boolean.h"
+#include "../JSON_boolean.h"
 
 extern inline long long int JSON_boolean_size_value() {
     return sizeof( char );
