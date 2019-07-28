@@ -1,5 +1,5 @@
-#ifndef OBJECT_JSON
-#define OBJECT_JSON
+#ifndef JSON_OBJECT
+#define JSON_OBJECT
 
 #include "JSON_interface.h"
 #include "../DataStructure/Dict/dict_t.h"
