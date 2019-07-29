@@ -26,12 +26,8 @@ struct json_object_t {
     void (*print)( JSON_object_t* self );
 };
 
-static JSON_object_t* JSON_new() {
+static JSON_object_t* JSON_new( void ) {
     return (JSON_object_t*) calloc(1, sizeof(JSON_object_t));
-}
-
-static void JSON_print( JSON_object_t* self ) {
-    self->print( self );
 }
 
 static void JSON_del( JSON_object_t** pself ) {
@@ -46,6 +42,10 @@ static void* JSON_get( JSON_object_t* self ) {
 
 static void JSON_set( JSON_object_t* self, void* val ) {
     self->set( self, val );
+}
+
+static void JSON_print( JSON_object_t* self ) {
+    self->print( self );
 }
 
 // Defaults
