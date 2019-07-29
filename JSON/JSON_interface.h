@@ -29,7 +29,6 @@ struct json_object_t {
 static JSON_object_t* JSON_new( void ) {
     return (JSON_object_t*) calloc(1, sizeof(JSON_object_t));
 }
-
 static void JSON_del( JSON_object_t** pself ) {
     JSON_object_t *self = *pself;
     self->del( pself );
@@ -39,7 +38,6 @@ static void JSON_del( JSON_object_t** pself ) {
 static void* JSON_get( JSON_object_t* self ) {
     return self->get( self );
 }
-
 static void JSON_set( JSON_object_t* self, void* val ) {
     self->set( self, val );
 }

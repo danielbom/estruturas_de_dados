@@ -26,8 +26,7 @@ token_t* token_new() {
 void token_print( token_t* self ) {
     self->print( self );
 }
-
-void Token_parse( token_t* self ) {
+void token_parse( token_t* self ) {
     self->parse( self );
 }
 
